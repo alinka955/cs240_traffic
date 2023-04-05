@@ -5,25 +5,23 @@
 #include <vector>
 #include <map>
 using namespace std;
+
 void error(string err, string arg) {
         cerr << err << arg << endl;
         exit(0);
 }
 
-int main (int argc, char* argv[]){
+map<string, double> inputToDict(string input){
 
         //Open the input file
-        //ifstream infile{argv[1]};
-        ifstream infile;
-        infile.open("input.txt");
-
-        string parameter;
-        double value;
+        ifstream infile{input};
 
         //Check if infile cannot be open
         if (!infile.is_open()){
-                error("Unable to open the following file: ", argv[1]);
+                error("Unable to open the following file: ", input);
         }
+        string parameter;
+        double value;
 
         //Create a dictionary to store values
         map<string, double> dict;
@@ -32,6 +30,15 @@ int main (int argc, char* argv[]){
                 dict.insert({parameter, value});
 
         }
+        infile.close();
+        return dict;
+
+}
+
+int main (int argc, char* argv[]){
+
+        map<string, double> dict{inputToDict(argv[1])};
+        
         //displaying the contents
         for (auto element : dict){
                 cout<<element.first<< element.second << endl;
@@ -40,6 +47,7 @@ int main (int argc, char* argv[]){
         // example accessing value based on the variable name
         cout << dict["maximum_simulated_time:"] << endl;
 
-        infile.close();
+        //infile.close();
 
 }
+
