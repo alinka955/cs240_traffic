@@ -5,8 +5,7 @@
 #include <vector>
 
 // import dictionary
-
-
+map<string,double> inputDict{readinput.inputToDict(argv[1])};
 
 int halfsize = number_of_sections_before_intersection;
 
