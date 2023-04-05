@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Animator.h"
 #include "VehicleBase.h"
+#include "Random.cpp"
 #include <vector>
 
 void error(string err, string arg) {
