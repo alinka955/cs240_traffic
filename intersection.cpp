@@ -6,7 +6,6 @@
 #include <map>
 #include <sstream>
 #include <fstream>
-#include <sstream>
 void error(string err, string arg) {
         cerr << err << arg << endl;
         exit(0);
