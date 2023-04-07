@@ -1,13 +1,23 @@
 #include <iostream>
 #include <random>
+#include <string>
 
 using namespace std;
 
-    int main(){
-        int initialSeed{24601};
-        mt19937 rng;
-        uniform_real_distribution<double> rand_double(0.0, 1.0);
-        // rand_double will use rng to generate uniform(0,1) variates
-        rng.seed(initialSeed);
-        return 0;
-    }
+class Random{
+
+        private:
+             int initialSeed;
+             mt19937 rng;
+
+        public Random(int seed){
+             initialSeed = seed;
+             uniform_real_distribution<double> rand_double(0.0, 1.0);
+             rng.seed(intialSeed);
+        }
+
+        public ~Random{
+             delete[] rng;
+             delete[] initialSeed;
+        }
+}
