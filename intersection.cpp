@@ -88,18 +88,18 @@ std::vector<VehicleBase*> northbound(halfSize * 2 + 2, nullptr);
 
         }
 
-        int assignVehicle(){
-                double randNum = random();
-                if (randNum < proportion_of_SUVs){ //suv is 0
-                        return 0;
-                }
-                else if(proportion_of_SUVs < randNum < (proportion_of_SUVs + proportion_of_cars)){ // car is 1
-                        return 1;
-                }
-                else{ // truck is 2
-                        return 2;
-                }
+int assignVehicle(){
+        double randNum = random();
+        if (randNum < proportion_of_SUVs){ //suv is 0
+                return 0;
         }
+        else if(proportion_of_SUVs < randNum < (proportion_of_SUVs + proportion_of_cars)){ // car is 1
+                return 1;
+        }
+        else{ // truck is 2
+                return 2;
+        }
+}
 
 
 int main (int argc, char* argv[]){
