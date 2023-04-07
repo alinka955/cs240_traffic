@@ -6,12 +6,13 @@
 #include <map>
 #include <sstream>
 #include <fstream>
-#include"readinput.cpp"
+#include"readinput.h"
 
 using namespace std;
 
 class Intersection{
 private:
+    Readinput readinput;
     static map<string, double> inputDict;
     double halfsize;
     double maximum_simulated_time;
@@ -37,7 +38,7 @@ private:
     void checkCarSpawn();
     int assignVehicle();
 public:
-    Intersection(const map<string, double>);
+    Intersection();
     Intersection(const Intersection& other);
     Intersection& operator=(Intersection& other);
     Intersection(Intersection&& other);
