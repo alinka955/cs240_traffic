@@ -69,24 +69,24 @@ std::vector<VehicleBase*> southbound(halfSize * 2 + 2, nullptr);
 std::vector<VehicleBase*> northbound(halfSize * 2 + 2, nullptr);
 
 
- void checkCarSpawn(){
-                if(random() < prob_new_vehicle_eastbound){
-                        int carType = assignVehicle();
-                        if(carType == 0){ //suv // needs an assigned direction
-                                VehicleBase v = new VehicleBase(suv, None);
-                                eastbound.push_back(v&);
-                        }
-                        else if(carType == 1){ //car // needs an assigned direction
-                                VehicleBase v = new VehicleBase(car, None);
-                                eastbound.push_back(v&);
-                        }
-                        else{
-                                VehicleBase v = new VehicleBase(truck, None);
-                                eastbound.push_back(v&);
-                        }
-                }
-
+void checkCarSpawn(){
+        if(random() < prob_new_vehicle_eastbound){
+                int carType = assignVehicle();
+        if(carType == 0){ //suv // needs an assigned direction
+                VehicleBase v = new VehicleBase(suv, None);
+                eastbound.push_back(v&);
         }
+        else if(carType == 1){ //car // needs an assigned direction
+                VehicleBase v = new VehicleBase(car, None);
+                eastbound.push_back(v&);
+        }
+        else{
+                VehicleBase v = new VehicleBase(truck, None);
+                eastbound.push_back(v&);
+        }
+}
+
+}
 
 int assignVehicle(){
         double randNum = random();
