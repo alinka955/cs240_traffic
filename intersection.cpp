@@ -49,7 +49,9 @@ Intersection::Intersection() : readinput()
        
 
 
-
+	double Intersection::getHalfsize(){
+		return halfsize;
+	}
 
 	 void Intersection::checkCarSpawn()
         {
