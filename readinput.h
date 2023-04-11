@@ -1,18 +1,15 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <vector>
-#include <map>
-using namespace std;
+#ifndef READINPUT_H
+#define READINPUT_H
 
-class ReadInput{
-	private:
-		string input;
-		void error(string err, string arg);
-	public:
-		ReadInput();
-		//~ReadInput();	
-		
-		map<string, double> getDict(string input);
+#include <map>
+#include <string>
+
+class ReadInput
+{
+public:
+	ReadInput();
+	void error(std::string err, std::string arg);
+	std::map<std::string, double> getDict(std::string input);
 };
+
+#endif /* READINPUT_H */
