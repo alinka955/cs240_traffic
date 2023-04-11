@@ -62,17 +62,17 @@ int main(int argc, char *argv[])
                 int carType = assignVehicle();
                 if (carType == 0)
                 { // suv // needs an assigned direction
-                    VehicleBase v = VehicleBase(VehicleType::suv, Direction::east);
+                    VehicleBase v = new VehicleBase(VehicleType::suv, Direction::east);
                     eastbound.push_back(&v);
                 }
                 else if (carType == 1)
                 { // car // needs an assigned direction
-                    VehicleBase v = VehicleBase(VehicleType::car, Direction::east);
+                    VehicleBase v = new VehicleBase(VehicleType::car, Direction::east);
                     eastbound.push_back(&v);
                 }
                 else
                 {
-                    VehicleBase v = VehicleBase(VehicleType::truck, Direction::east);
+                    VehicleBase v = new VehicleBase(VehicleType::truck, Direction::east);
                     eastbound.push_back(&v);
                 }
             }
