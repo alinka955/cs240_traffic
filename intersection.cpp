@@ -51,18 +51,18 @@ Intersection::Intersection() : readinput()
                         int carType = assignVehicle();
                         if (carType == 0)
                         { // suv // needs an assigned direction
-                                VehicleBase v = new VehicleBase(suv, None);
-                                eastbound.push_back(v &);
+                                VehicleBase v = VehicleBase(VehicleType::suv, Direction::east);
+                                eastbound.push_back(&v);
                         }
                         else if (carType == 1)
                         { // car // needs an assigned direction
-                                VehicleBase v = new VehicleBase(car, None);
-                                eastbound.push_back(v &);
+                                VehicleBase v = VehicleBase(VehicleType::car, Direction::east);
+                                eastbound.push_back(&v);
                         }
                         else
                         {
-                                VehicleBase v = new VehicleBase(truck, None);
-                                eastbound.push_back(v &);
+                                VehicleBase v = VehicleBase(VehicleType::truck, Direction::east);
+                                eastbound.push_back(&v);
                         }
                 }
         }
@@ -84,7 +84,7 @@ Intersection::Intersection() : readinput()
                 }
         }
 
-        double random()
+        double Intersection::random()
         {
                 return .1;
         }
