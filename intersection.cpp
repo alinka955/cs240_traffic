@@ -14,7 +14,7 @@ Intersection::Intersection() : readinput()
 {
         std::map<std::string, double> inputDict = readinput.getDict("input.txt");
         // find the values of each variable, read from input
-        halfsize = inputDict["number_of_sections_before_intersection"];
+        double halfsize = inputDict["number_of_sections_before_intersection"];
         double maximum_simulated_time = inputDict["maximum_simulated_time"];
 
         double green_east_west = inputDict["green_east_west"];
