@@ -13,12 +13,23 @@
 
 class Intersection {
 public:
-    Intersection();
-    Intersection(const Intersection& other);
-    Intersection& operator=(Intersection& other);
-    Intersection(Intersection&& other);
-    Intersection& operator=(Intersection&& other);
-    ~Intersection();
+	Intersection();
+	Intersection(const Intersection& other);
+	Intersection& operator=(Intersection& other);
+	Intersection(Intersection&& other);
+	Intersection& operator=(Intersection&& other);
+	~Intersection();
+	// get and set methods for intersection
+	std::vector<VehicleBase *> getWestbound();
+	void setWestbound(double halfsize);	
+	std::vector<VehicleBase *> getEastbound();
+	void setEastbound(double halfsize);	
+	std::vector<VehicleBase *> getSouthbound();
+	void setSouthbound(double halfsize);	
+	std::vector<VehicleBase *> getNorthbound();
+	void setNorthbound(double halfsize);	
+
+
 private:
     void checkCarSpawn();
     double random();
@@ -48,4 +59,5 @@ private:
     double proportion_left_turn_cars;
     double proportion_left_turn_trucks;
     ReadInput readinput;
+
 };
