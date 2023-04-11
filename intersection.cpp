@@ -10,11 +10,12 @@
 #include "intersection.h"
 #include <string>
 
-Intersection::Intersection() : readinput()
+Intersection::Intersection()
 {
+        ReadInput readinput;
         std::map<std::string, double> inputDict = readinput.getDict("input.txt");
         // find the values of each variable, read from input
-        double halfsize = inputDict["number_of_sections_before_intersection"];
+        double halfsize = inputDict["number_of_sections_before_intersection:"];
         double maximum_simulated_time = inputDict["maximum_simulated_time"];
 
         double green_east_west = inputDict["green_east_west"];
@@ -39,69 +40,93 @@ Intersection::Intersection() : readinput()
         double proportion_left_turn_cars = inputDict["proportion_left_turn_cars"];
         double proportion_left_turn_trucks = inputDict["proportion_left_turn_trucks"];
         // construct vectors of VehicleBase* of appropriate size, init to nullptr
+
         
-	
-	std::vector<VehicleBase *> westbound(halfsize * 2 + 2, nullptr);
+};
+
+
+void Intersection::checkCarSpawn()
+{
+        if (random() < prob_new_vehicle_eastbound)
+        {
+                int carType = assignVehicle();
+                if (carType == 0)
+                { // suv // needs an assigned direction
+                        VehicleBase v = VehicleBase(VehicleType::suv, Direction::east);
+                        eastbound.push_back(&v);
+                }
+                else if (carType == 1)
+                { // car // needs an assigned direction
+                        VehicleBase v = VehicleBase(VehicleType::car, Direction::east);
+                        eastbound.push_back(&v);
+                }
+                else
+                {
+                        VehicleBase v = VehicleBase(VehicleType::truck, Direction::east);
+                        eastbound.push_back(&v);
+                }
+        }
+}
+
+int Intersection::assignVehicle()
+{
+        double randNum = random();
+        if (randNum < proportion_of_SUVs)
+        { // suv is 0
+                return 0;
+        }
+        else if (proportion_of_SUVs < randNum < (proportion_of_SUVs + proportion_of_cars))
+        { // car is 1
+                return 1;
+        }
+        else
+        { // truck is 2
+                return 2;
+        }
+}
+
+double Intersection::random()
+{
+        return .1;
+}
+double Intersection::getHalfsize()
+{
+        return halfsize;
+}
+
+int main(int argc, char *argv[])
+{
+        // get dictionary with input
+        // map<string,double> inputDict{inputToDict(argv[1])};
+        // Animator anim(halfSize);
+        //ReadInput readinput;
+        //std::map<std::string, double> inputDict = readinput.getDict("input.txt");
+        // find the values of each variable, read from input
+        //double halfsize = inputDict["number_of_sections_before_intersection:"];
+        
+        
+        
+        Intersection myIntersection;
+        size_t halfsize = myIntersection.getHalfsize();
+        std::cout << "halfsize" << halfsize << std::endl;
+        /*Animator anim(halfsize);
+
+        
+        std::vector<VehicleBase *> westbound(halfsize * 2 + 2, nullptr);
         std::vector<VehicleBase *> eastbound(halfsize * 2 + 2, nullptr);
         std::vector<VehicleBase *> southbound(halfsize * 2 + 2, nullptr);
         std::vector<VehicleBase *> northbound(halfsize * 2 + 2, nullptr);
-};
-       
 
+        char dummy;
+        anim.setVehiclesNorthbound(northbound);
+        anim.setVehiclesWestbound(westbound);
+        anim.setVehiclesSouthbound(southbound);
+        anim.setVehiclesEastbound(eastbound);
+        anim.draw(8);
+        southbound.assign(halfsize * 2 + 2, nullptr); // reset vector
+        northbound.assign(halfsize * 2 + 2, nullptr); // reset
+        eastbound.assign(halfsize * 2 + 2, nullptr);  // reset
+        westbound.assign(halfsize * 2 + 2, nullptr);  // reset*/
 
-	double Intersection::getHalfsize(){
-		return halfsize;
-	}
-
-	 void Intersection::checkCarSpawn()
-        {
-                if (random() < prob_new_vehicle_eastbound)
-                {
-                        int carType = assignVehicle();
-                        if (carType == 0)
-                        { // suv // needs an assigned direction
-                                VehicleBase v = VehicleBase(VehicleType::suv, Direction::east);
-                                eastbound.push_back(&v);
-                        }
-                        else if (carType == 1)
-                        { // car // needs an assigned direction
-                                VehicleBase v = VehicleBase(VehicleType::car, Direction::east);
-                                eastbound.push_back(&v);
-                        }
-                        else
-                        {
-                                VehicleBase v = VehicleBase(VehicleType::truck, Direction::east);
-                                eastbound.push_back(&v);
-                        }
-                }
-        }
-
-        int Intersection::assignVehicle()
-        {
-                double randNum = random();
-                if (randNum < proportion_of_SUVs)
-                { // suv is 0
-                        return 0;
-                }
-                else if (proportion_of_SUVs < randNum < (proportion_of_SUVs + proportion_of_cars))
-                { // car is 1
-                        return 1;
-                }
-                else
-                { // truck is 2
-                        return 2;
-                }
-        }
-
-        double Intersection::random()
-        {
-                return .1;
-        }
-
-        int main(int argc, char *argv[])
-        {
-                // get dictionary with input
-                // map<string,double> inputDict{inputToDict(argv[1])};
-                // Animator anim(halfSize);
-                Intersection myIntersection();
-        }
+        // std::cin.get(dummy);*/
+}
