@@ -19,7 +19,7 @@ public:
 	Intersection(Intersection&& other);
 	Intersection& operator=(Intersection&& other);
 	~Intersection();
-	getHalfsize();
+	double getHalfsize();
 	
 
 private:
