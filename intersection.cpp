@@ -48,31 +48,6 @@ Intersection::Intersection() : readinput()
 };
        
 
-// get and set methods for intersection
-	std::vector<VehicleBase *> Intersection::getWestbound(){
-		return westbound;
-	}
- 	void Intersection::setWestbound(double halfsize){
-		std::vector<VehicleBase *> westbound(halfsize * 2 + 2, nullptr); 
-	}	
-	std::vector<VehicleBase *> Intersection::getEastbound(){
-		return eastbound;
-	}
- 	void Intersection::setEastbound(double halfsize){
-		std::vector<VehicleBase *> eastbound(halfsize * 2 + 2, nullptr);
-	}
-	std::vector<VehicleBase *> Intersection::getSouthbound(){
-		return southbound;
-	}
- 	void Intersection::setSouthbound(double halfsize){
-		std::vector<VehicleBase *> southbound(halfsize * 2 + 2, nullptr);
-	}	
-	std::vector<VehicleBase *> Intersection::getNorthbound(){
-		return northbound;
-	}
- 	void Intersection::setNorthbound(double halfsize){
-		std::vector<VehicleBase *> northbound(halfsize * 2 + 2, nullptr);
-	}	
 
 
 
