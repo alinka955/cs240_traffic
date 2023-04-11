@@ -19,16 +19,7 @@ public:
 	Intersection(Intersection&& other);
 	Intersection& operator=(Intersection&& other);
 	~Intersection();
-	// get and set methods for intersection
-	std::vector<VehicleBase *> getWestbound();
-	void setWestbound(double halfsize);	
-	std::vector<VehicleBase *> getEastbound();
-	void setEastbound(double halfsize);	
-	std::vector<VehicleBase *> getSouthbound();
-	void setSouthbound(double halfsize);	
-	std::vector<VehicleBase *> getNorthbound();
-	void setNorthbound(double halfsize);	
-
+	
 
 private:
     void checkCarSpawn();
