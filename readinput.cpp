@@ -41,7 +41,7 @@ map<string, double> ReadInput::getDict(string input){
 	return dict;
 }
 
-
+/*
 
 int main (int argc, char* argv[]){
 	ReadInput readinput;
@@ -57,4 +57,4 @@ int main (int argc, char* argv[]){
         //infile.close();
 	    
 }
-
+*/
