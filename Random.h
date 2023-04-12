@@ -4,13 +4,14 @@
 
 using namespace std;
 
-class Random{
+class RandomClass{
     private:
         int initialSeed;
         mt19937 rng;
-    public:
-        Random();
-        Random(int seed);
-        ~Random();
 
+        public:
+        RandomClass();
+        RandomClass(int seed);
+        ~RandomClass();
+        double getRandom();
 };
