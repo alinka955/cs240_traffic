@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Animator.h"
 #include "VehicleBase.h"
-#include "Random.cpp"
+#include "RandomClass.h"
 #include <vector>
 #include <map>
 #include <sstream>
@@ -10,7 +10,51 @@
 #include "intersection.h"
 #include <string>
 
+/*
+void checkCarSpawn() {
+    if (random() < prob_new_vehicle_eastbound)
+    {
+	int carType = assignVehicle();
+	if (carType == 0)
+	{ // suv // needs an assigned direction
+	    VehicleBase v = new VehicleBase(VehicleType::suv, Direction::east);
+	    eastbound.push_back(&v);
+	}
+	else if (carType == 1)
+	{ // car // needs an assigned direction
+	    VehicleBase v = new VehicleBase(VehicleType::car, Direction::east);
+	    eastbound.push_back(&v);
+	}
+	else
+	{
+	    VehicleBase v = new VehicleBase(VehicleType::truck, Direction::east);
+	    eastbound.push_back(&v);
+	}
+    }
+}
 
+*/
+// decides if a vehicle is an suv, car, or truck
+int assignVehicle(double proportion_of_SUVs, double proportion_of_cars)
+{
+    RandomClass random(123); 
+    double randNum = random.getRandom();
+    //double randNum = 0.23;   
+    cout<< "random number " << randNum<< endl; 
+
+    if (randNum < proportion_of_SUVs)
+    { // suv is 0
+	return 0;
+    }
+    else if (proportion_of_SUVs < randNum < (proportion_of_SUVs + proportion_of_cars))
+    { // car is 1
+	return 1;
+    }
+    else
+    { // truck is 2
+	return 2;
+    }
+}
 
 
 
@@ -18,7 +62,7 @@
 int main(int argc, char *argv[])
 {
         ReadInput readinput;
-        Random random;
+        //RandomClass random;
         std::map<std::string, double> inputDict = readinput.getDict(argv[1]);
         // find the values of each variable, read from input
         size_t halfsize = inputDict["number_of_sections_before_intersection:"];
@@ -46,7 +90,6 @@ int main(int argc, char *argv[])
         double proportion_left_turn_cars = inputDict["proportion_left_turn_cars:"];
         double proportion_left_turn_trucks = inputDict["proportion_left_turn_trucks:"];
 
-        Intersection myIntersection;
         std::cout << "halfsize" << halfsize << std::endl;
         Animator anim(halfsize);
 
@@ -56,44 +99,9 @@ int main(int argc, char *argv[])
         std::vector<VehicleBase *> southbound(halfsize * 2 + 2, nullptr);
         std::vector<VehicleBase *> northbound(halfsize * 2 + 2, nullptr);
 
-        void checkCarSpawn() {
-            if (random() < prob_new_vehicle_eastbound)
-            {
-                int carType = assignVehicle();
-                if (carType == 0)
-                { // suv // needs an assigned direction
-                    VehicleBase v = new VehicleBase(VehicleType::suv, Direction::east);
-                    eastbound.push_back(&v);
-                }
-                else if (carType == 1)
-                { // car // needs an assigned direction
-                    VehicleBase v = new VehicleBase(VehicleType::car, Direction::east);
-                    eastbound.push_back(&v);
-                }
-                else
-                {
-                    VehicleBase v = new VehicleBase(VehicleType::truck, Direction::east);
-                    eastbound.push_back(&v);
-                }
-            }
-        }
-        // decides if a vehicle is an suv, car, or truck
-        int assignVehicle()
-        {
-            double randNum = random();
-            if (randNum < proportion_of_SUVs)
-            { // suv is 0
-                return 0;
-            }
-            else if (proportion_of_SUVs < randNum < (proportion_of_SUVs + proportion_of_cars))
-            { // car is 1
-                return 1;
-            }
-            else
-            { // truck is 2
-                return 2;
-            }
-        }
+	int car =  assignVehicle(proportion_of_SUVs, proportion_of_cars);
+	cout << car << endl;
+
 
         char dummy;
         anim.setVehiclesNorthbound(northbound);
