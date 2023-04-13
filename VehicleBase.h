@@ -20,6 +20,9 @@ class VehicleBase
       VehicleBase(VehicleType type, Direction originalDirection);
       VehicleBase(const VehicleBase& other);
       ~VehicleBase();
+      VehicleBase(VehicleBase&& other)noexcept;
+      VehicleBase& operator=(const VehicleBase& other);
+      VehicleBase& operator=(VehicleBase&& other)noexcept;
 
       inline int getVehicleID() const { return this->vehicleID; }
 
