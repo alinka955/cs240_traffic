@@ -36,130 +36,94 @@ int assignVehicle(double proportion_of_SUVs, double proportion_of_cars)
     }
 }
 
-void checkCarSpawn(double prob_new_vehicle_eastbound, double prob_new_vehicle_northbound, double prob_new_vehicle_southbound, double prob_new_vehicle_westbound,
-			double proportion_of_SUVs, double proportion_of_cars) {
-    RandomClass random(123);
-    double randNum = random.getRandom();
-    int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars);
-    cout<<carType<<endl;
-   if (random.getRandom() < prob_new_vehicle_eastbound)
-
-
-    {
-	if (carType == 0)
-	{ // suv // needs an assigned direction
-	    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::east);
-		cout <<v<<endl;
-//	    return &v;    
-	    for(; i < 3; i++){
-	        eastbound.push_back(&v);
-	    }
-	    //eastbound.push_back(&v);
-	}
-	else if (carType == 1)
-	{ // car // needs an assigned direction
-	    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::east);
-	 //   return v*; 
-	   //eastbound.push_back(&v);
-		cout <<v<<endl;
-	}
-	else
-	{
-	    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::east);
-	    //eastbound.push_back(&v);
-	 //   return v*;
-		cout <<v<<endl;
-	
-
-	}
-	
-    }
-
-   else if (random.getRandom() < prob_new_vehicle_northbound)
+VehicleBase* checkCarSpawn(double prob_new_vehicle_eastbound, double prob_new_vehicle_northbound, double prob_new_vehicle_southbound, double prob_new_vehicle_westbound, double proportion_of_SUVs, double proportion_of_cars){
+	RandomClass random(123);
+	double randNum = random.getRandom();
+	int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars);
+	cout<< "cartype" << carType<<endl;
+	cout << random.getRandom() << endl;
+	cout <<prob_new_vehicle_eastbound<<endl;
+	if (random.getRandom() < prob_new_vehicle_eastbound)
 	{
 		if (carType == 0)
-	{ // suv // needs an assigned direction
-	    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::north);
-		cout <<v<<endl;
-//	    return &v;    
-	    //eastbound.push_back(&v);
+		{ // suv // needs an assigned direction
+			VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::east);
+			return v;	
+		}
+		else if (carType == 1)
+		{ // car // needs an assigned direction
+			VehicleBase *v = new VehicleBase(VehicleType::car, Direction::east);
+			return v;
+		}
+		else
+		{
+			VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::east);
+			return v;
+		}	
 	}
-	else if (carType == 1)
-	{ // car // needs an assigned direction
-	    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::north);
-	 //   return v*; 
-	   //eastbound.push_back(&v);
-		cout <<v<<endl;
-	}
-	else
+   	else if (random.getRandom() < prob_new_vehicle_northbound)
 	{
-	    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::north);
-	    //eastbound.push_back(&v);
-	 //   return v*;
-		cout <<v<<endl;
+		if (carType == 0)
+		{ // suv // needs an assigned direction
+			VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::north);
+			return v;
+		}
+		else if (carType == 1)
+		{ // car // needs an assigned direction
+			VehicleBase *v = new VehicleBase(VehicleType::car, Direction::north);
+			return v;
+		}
+		else
+		{
+			VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::north);
+			return v;
+		}		
+	}
+	else if (random.getRandom()< prob_new_vehicle_southbound)
+	{
+
+		if (carType == 0)
+		{ // suv // needs an assigned direction
+			VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::south);
+			return v;
+		}
+		else if (carType == 1)
+		{ // car // needs an assigned direction
+			VehicleBase *v = new VehicleBase(VehicleType::car, Direction::south);
+			return v;
+		}
+		else
+		{
+			VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::south);
+			return v;
+		}
+	}
+	else if (random.getRandom() < prob_new_vehicle_westbound)
+	{
+		if (carType == 0)
+		{ // suv // needs an assigned direction
+			VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::west);
+			return v;
+		}
+		else if (carType == 1)
+		{ // car // needs an assigned direction
+		    	VehicleBase *v = new VehicleBase(VehicleType::car, Direction::west);
+		 	return v; 
+		}
+		else
+		{
+		    	VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::west);
+			return v;
+		}
+	}
+/*	else
+	{
+		VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::west);
+		//cout << "vehcile base address" << &v << endl;
+		return v;		
+	}
+*/	
 	
-
-	}	
-		
-	}
-
-   else if (random.getRandom()< prob_new_vehicle_southbound)
-	{
-
-	if (carType == 0)
-	{ // suv // needs an assigned direction
-	    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::south);
-		cout <<v<<endl;
-//	    return &v;    
-	    //eastbound.push_back(&v);
-	}
-	else if (carType == 1)
-	{ // car // needs an assigned direction
-	    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::south);
-	 //   return v*; 
-	   //eastbound.push_back(&v);
-		cout <<v<<endl;
-	}
-	else
-	{
-	    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::south);
-	    //eastbound.push_back(&v);
-	 //   return v*;
-	cout <<"fgfgf"<< endl;
-		cout <<v<<endl;
-	
-
-	}
-	}
-   else if (random.getRandom() < prob_new_vehicle_westbound)
-	{
-	if (carType == 0)
-	{ // suv // needs an assigned direction
-	    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::west);
-		cout <<v<<endl;
-//	    return &v;    
-	    //eastbound.push_back(&v);
-	}
-	else if (carType == 1)
-	{ // car // needs an assigned direction
-	    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::west);
-	 //   return v*; 
-	   //eastbound.push_back(&v);
-		cout <<v<<endl;
-	}
-	else
-	{
-	    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::west);
-	    //eastbound.push_back(&v);
-	 //   return v*;
-	cout <<"fgfgf"<< endl;
-		cout <<v<<endl;
-	
-
-	}
-	}
-cout << "dff" <<endl;
-    
 }
 
 
@@ -208,8 +172,13 @@ int main(int argc, char *argv[])
 
 	//VehicleBase vehicle = checkCarSpawn(prob_new_vehicle_eastbound, proportion_of_SUVs, proportion_of_cars);
 	//cout<<&vehicle<<endl;
-        checkCarSpawn(prob_new_vehicle_eastbound, prob_new_vehicle_northbound, prob_new_vehicle_southbound, prob_new_vehicle_westbound,  proportion_of_SUVs, proportion_of_cars);
+ 	VehicleBase* v = checkCarSpawn(prob_new_vehicle_eastbound, prob_new_vehicle_northbound, prob_new_vehicle_southbound, prob_new_vehicle_westbound,  proportion_of_SUVs, proportion_of_cars);
+
 	char dummy;
+
+	eastbound.push_back(v);
+
+
         anim.setVehiclesNorthbound(northbound);
         anim.setVehiclesWestbound(westbound);
         anim.setVehiclesSouthbound(southbound);

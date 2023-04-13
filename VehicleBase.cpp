@@ -1,8 +1,8 @@
 #ifndef __VEHICLE_BASE_CPP__
 #define __VEHICLE_BASE_CPP__
-
+#include <iostream> 
 #include "VehicleBase.h"
-
+using namespace std;
 int VehicleBase::vehicleCount = 0;
 
 
@@ -54,6 +54,13 @@ VehicleBase& VehicleBase::operator=(VehicleBase&& other)noexcept{
     other.vehicleID = 0;
     return *this;
 }
-
-
+/*
+int main (){
+	VehicleBase v1(VehicleType::car, Direction::east);
+	VehicleBase v2(v1);
+	
+	std::cout << &v1 << std::endl;
+	std::cout << &v2 << std::endl;	
+}
+*/
 #endif

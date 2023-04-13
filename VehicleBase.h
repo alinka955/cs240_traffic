@@ -1,6 +1,6 @@
 #ifndef __VEHICLE_BASE_H__
 #define __VEHICLE_BASE_H__
-
+using namespace std;
 // enum: see http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-enum
 enum class Direction   {north, south, east, west};
 enum class VehicleType {car, suv, truck};
