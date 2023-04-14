@@ -76,8 +76,19 @@ int main(int argc, char *argv[])
     anim.setVehiclesWestbound(westbound);
     anim.setVehiclesSouthbound(southbound);
     anim.setVehiclesEastbound(eastbound); //initial construction of intersection
+    anim.setLightNorthSouth(LightColor::red);
+    anim.setLightEastWest(LightColor::green);
     anim.draw(numClicks);
     RandomClass random(1000);
+    int NSredTicks = green_east_west + yellow_east_west;
+    int EWredTicks = green_north_south + yellow_north_south;
+    bool greenEW = true; //bool values for if its green, yellow, red
+    bool greenNS = false;
+    bool yellowNS = false;
+    bool yellowEW = false;
+    bool redEW = false;
+    bool redNS = true;
+    size_t light_ticks = 0; //tracks light switches
     while (numClicks < maximum_simulated_time)
     {
         double randNum = random.getRandom();
@@ -193,10 +204,82 @@ int main(int argc, char *argv[])
         std::cin.get(dummy);
 
         numClicks++;
+        light_ticks++; //checks conditions for NS, EW red, yellow, green
+        if (redNS && light_ticks >= NSredTicks){
+            redNS = false;
+            yellowNS = true;
+            light_ticks = 0;
+        }
+        if (yellowNS && light_ticks >= yellow_north_south)
+        {
+            yellowNS = false;
+            greenNS = true;
+            light_ticks = 0;
+        }
+        if (greenNS && light_ticks >= green_north_south)
+        {
+            greenNS = false;
+            yellowNS = true;
+            light_ticks = 0;
+        }
+        if (yellowNS && light_ticks >= yellow_north_south)
+        {
+            yellowNS = false;
+            redNS = true;
+            light_ticks = 0;
+        }
+        if (redEW && light_ticks >= EWredTicks)
+        {
+            redEW = false;
+            yellowEW = true;
+            light_ticks = 0;
+        }
+        if (yellowEW && light_ticks >= yellow_east_west)
+        {
+            yellowEW = false;
+            greenEW = true;
+            light_ticks = 0;
+        }
+        if (greenEW && light_ticks >= green_east_west)
+        {
+            greenEW = false;
+            yellowEW = true;
+            light_ticks = 0;
+        }
+        if (yellowEW && light_ticks >= yellow_east_west)
+        {
+            yellowEW = false;
+            redEW = true;
+            light_ticks = 0;
+        }
+
         anim.setVehiclesNorthbound(northbound); //reconstructs intersection with appropriate numClicks
         anim.setVehiclesWestbound(westbound);
         anim.setVehiclesSouthbound(southbound);
         anim.setVehiclesEastbound(eastbound);
+        
+        if(greenEW && redNS){
+            cout << "greenEW" << endl;
+            anim.setLightNorthSouth(LightColor::red);
+            anim.setLightEastWest(LightColor::green);
+        }
+        else if(yellowEW && redNS){
+            cout << "yellowEW" << endl;
+            anim.setLightNorthSouth(LightColor::red);
+            anim.setLightEastWest(LightColor::yellow);
+        }
+        else if(greenNS && redEW){
+            cout << "greeNS" << endl;
+            anim.setLightNorthSouth(LightColor::green);
+            anim.setLightEastWest(LightColor::red);
+        }
+        else if (yellowNS && redEW){
+            cout << "yelowNS" << endl;
+            anim.setLightNorthSouth(LightColor::yellow);
+            anim.setLightEastWest(LightColor::red);
+        }
+       
+        
         anim.draw(numClicks);
     }
 }
