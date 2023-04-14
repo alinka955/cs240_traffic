@@ -275,10 +275,7 @@ int main(int argc, char *argv[])
             anim.setLightNorthSouth(LightColor::yellow);
             anim.setLightEastWest(LightColor::red);
         }
-        else if (redNS && ){
-            anim.setLightEastWest(LightColor::yellow);
-            anim.setLightNorthSouth(LightColor::red);
-        }
+       
         
         anim.draw(numClicks);
     }
