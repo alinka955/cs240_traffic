@@ -68,9 +68,10 @@ int main(int argc, char *argv[])
     std::vector<VehicleBase *> eastbound(halfsize * 2 + 2, nullptr);
     std::vector<VehicleBase *> southbound(halfsize * 2 + 2, nullptr);
     std::vector<VehicleBase *> northbound(halfsize * 2 + 2, nullptr);
+    
     char dummy;
-
     int numClicks = 0;
+    
     anim.setVehiclesNorthbound(northbound);
     anim.setVehiclesWestbound(westbound);
     anim.setVehiclesSouthbound(southbound);
@@ -141,10 +142,11 @@ int main(int argc, char *argv[])
             if (carType == 0)
             { //suv
                 VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::south);
-                southbound.push_back(v); // pushes suv 3 times
+		southbound.push_back(v); // pushes suv 3 times
                 southbound.push_back(v);
                 southbound.push_back(v);
-            }
+            	
+	    }
             else if (carType == 1)
             { //car
                 VehicleBase *v = new VehicleBase(VehicleType::car, Direction::south);
@@ -189,6 +191,7 @@ int main(int argc, char *argv[])
             VehicleBase::vehicleCount++;
         }
         std::cin.get(dummy);
+
         numClicks++;
         anim.setVehiclesNorthbound(northbound); //reconstructs intersection with appropriate numClicks
         anim.setVehiclesWestbound(westbound);
