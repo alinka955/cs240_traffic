@@ -80,6 +80,12 @@ int main(int argc, char *argv[])
     while (numClicks < maximum_simulated_time)
     {
         double randNum = random.getRandom();
+        for(; i < halfSize-1; i++){
+            eastbound[i] = eastbound[i+1];
+            northbound[i] = northbound[i+1];
+            southbound[i] = southbound[i+1];
+            westbound[i] = westbound [i+1];
+        }
         if (random.getRandom() < prob_new_vehicle_eastbound) // checks prob of eastbound spawn
         {
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars, 
@@ -87,23 +93,33 @@ int main(int argc, char *argv[])
             if (carType == 0)
             { 
                 VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::east);
-                eastbound.push_back(v); // pushes suv 3 times
-                eastbound.push_back(v);
-                eastbound.push_back(v);
+                if(eastbound[1] == null){  
+                    eastbound[0] = v;
+                }
+                else if (eastbound[1].getVehicleType() == suv){
+                    eastbound[0] = eastbound [1];
+                } 
+                
             }
             else if (carType == 1)
             { 
                 VehicleBase *v = new VehicleBase(VehicleType::car, Direction::east);
-                eastbound.push_back(v); // pushes car 2 times
-                eastbound.push_back(v);
+                if(eastbound[1] == null){  
+                    eastbound[0] = v;
+                }
+                else if (eastbound[1].getVehicleType() == car){
+                    eastbound[0] = eastbound [1];
+                } 
             }
             else
             {
                 VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::east);
-                eastbound.push_back(v); // pushes truck 4 times
-                eastbound.push_back(v);
-                eastbound.push_back(v);
-                eastbound.push_back(v);
+                if(eastbound[1] == null){  
+                    eastbound[0] = v;
+                }
+                else if (eastbound[1].getVehicleType() == truck){
+                    eastbound[0] = eastbound [1];
+                } 
             }
             VehicleBase::vehicleCount++;
         }
@@ -114,23 +130,32 @@ int main(int argc, char *argv[])
             if (carType == 0)  // suv north
             { 
                 VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::north);
-                northbound.push_back(v); //pushes suv 3 times
-                northbound.push_back(v);
-                northbound.push_back(v);
+                if(northbound[1] == null){  
+                    northbound[0] = v;
+                }
+                else if (northbound[1].getVehicleType() == suv){
+                    northbound[0] = northbound [1];
+                } 
             }
             else if (carType == 1) //car
             { 
                 VehicleBase *v = new VehicleBase(VehicleType::car, Direction::north);
-                northbound.push_back(v); //pushes car 2 times
-                northbound.push_back(v);
+                if(northbound[1] == null){  
+                    northbound[0] = v;
+                }
+                else if (northbound[1].getVehicleType() == car){
+                    northbound[0] = northbound [1];
+                } 
             }
             else
             { //truck
                 VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::north);
-                northbound.push_back(v); //pushes truck 4 times
-                northbound.push_back(v);
-                northbound.push_back(v);
-                northbound.push_back(v);
+                if(northbound[1] == null){  
+                    northbound[0] = v;
+                }
+                else if (northbound[1].getVehicleType() == truck){
+                    northbound[0] = northbound [1];
+                } 
             }
             VehicleBase::vehicleCount++;
         }
@@ -141,23 +166,32 @@ int main(int argc, char *argv[])
             if (carType == 0)
             { //suv
                 VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::south);
-                southbound.push_back(v); // pushes suv 3 times
-                southbound.push_back(v);
-                southbound.push_back(v);
+                if(southbound[1] == null){  
+                    southbound[0] = v;
+                }
+                else if (southbound[1].getVehicleType() == suv){
+                    southbound[0] = southbound [1];
+                } 
             }
             else if (carType == 1)
             { //car
                 VehicleBase *v = new VehicleBase(VehicleType::car, Direction::south);
-                southbound.push_back(v); //pushes car 2 times
-                southbound.push_back(v);
+                if(southbound[1] == null){  
+                    southbound[0] = v;
+                }
+                else if (southbound[1].getVehicleType() == car){
+                    southbound[0] = southbound [1];
+                }
             }
             else
             { //truck
                 VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::south);
-                southbound.push_back(v); //pushes truck 4 times
-                southbound.push_back(v);
-                southbound.push_back(v);
-                southbound.push_back(v);
+                if(southbound[1] == null){  
+                    southbound[0] = v;
+                }
+                else if (southbound[1].getVehicleType() == truck){
+                    southbound[0] = southbound [1];
+                }
             }
             VehicleBase::vehicleCount++;
         }
@@ -168,23 +202,32 @@ int main(int argc, char *argv[])
             if (carType == 0) //suv
             { 
                 VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::west);
-                westbound.push_back(v); // pushes suv 3 times
-                westbound.push_back(v); 
-                westbound.push_back(v);
+                if(westbound[1] == null){  
+                    westbound[0] = v;
+                }
+                else if (westbound[1].getVehicleType() == suv){
+                    westbound[0] = westbound [1];
+                }
             }
             else if (carType == 1)
             { // car // needs an assigned direction
                 VehicleBase *v = new VehicleBase(VehicleType::car, Direction::west);
-                westbound.push_back(v); // pushes car 2 times
-                westbound.push_back(v);
+                if(westbound[1] == null){  
+                    westbound[0] = v;
+                }
+                else if (westbound[1].getVehicleType() == car){
+                    westbound[0] = westbound [1];
+                }
             }
             else
             { //truck
                 VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::west);
-                westbound.push_back(v); // pushes truck 4 times
-                westbound.push_back(v);
-                westbound.push_back(v);
-                westbound.push_back(v);
+                if(westbound[1] == null){  
+                    westbound[0] = v;
+                }
+                else if (westbound[1].getVehicleType() == truck){
+                    westbound[0] = westbound [1];
+                }
             }
             VehicleBase::vehicleCount++;
         }
