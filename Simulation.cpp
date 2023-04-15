@@ -1,3 +1,5 @@
+
+
 #include <iostream>
 #include "Animator.h"
 #include "VehicleBase.h"
@@ -70,6 +72,8 @@ int main(int argc, char *argv[])
     std::vector<VehicleBase *> northbound(halfsize * 2 + 2, nullptr);
     char dummy;
 
+
+    int i = 0;
     int numClicks = 0;
     anim.setVehiclesNorthbound(northbound);
     anim.setVehiclesWestbound(westbound);
@@ -91,7 +95,7 @@ int main(int argc, char *argv[])
     while (numClicks < maximum_simulated_time)
     {
         double randNum = random.getRandom();
-        for(; i < halfSize-1; i++){
+        for(; i < halfsize-1; i++){
             eastbound[i] = eastbound[i+1];
             northbound[i] = northbound[i+1];
             southbound[i] = southbound[i+1];
@@ -103,32 +107,32 @@ int main(int argc, char *argv[])
             random.getRandom()); // chooses car type
             if (carType == 0)
             { 
-                if(eastbound[1] == null){  
+                if(eastbound[1] == nullptr){  
                     VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::east);
                     eastbound[0] = v;
                 }
-                else if (eastbound[1].getVehicleType() == suv){
+                else if (eastbound[1]->getVehicleType() == VehicleType::suv){
                     eastbound[0] = eastbound [1];
                 }
             }
             else if (carType == 1)
             { 
-                if(eastbound[1] == null){  
+                if(eastbound[1] == nullptr){  
                     VehicleBase *v = new VehicleBase(VehicleType::car, Direction::east);
                     eastbound[0] = v;
                 }
-                else if (eastbound[1].getVehicleType() == car){
+                else if (eastbound[1]->getVehicleType() == VehicleType::car){
                     eastbound[0] = eastbound [1];
                 }
             }
             else
             {
                
-                if(eastbound[1] == null){ 
+                if(eastbound[1] == nullptr){ 
                     VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::east);
                     eastbound[0] = v;
                 }
-                else if (eastbound[1].getVehicleType() == truck){
+                else if (eastbound[1]->getVehicleType() == VehicleType::truck){
                     eastbound[0] = eastbound [1];
                 } 
             }
@@ -140,31 +144,31 @@ int main(int argc, char *argv[])
            random.getRandom()); // chooses car type
             if (carType == 0)  // suv north
             { 
-                if(northbound[1] == null){  
+                if(northbound[1] == nullptr){  
                     VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::north);
                     northbound[0] = v;
                 }
-                else if (northbound[1].getVehicleType() == suv){
+                else if (northbound[1]->getVehicleType() == VehicleType::suv){
                     northbound[0] = northbound [1];
                 }
             }
             else if (carType == 1) //car
             { 
-                if(northbound[1] == null){  
+                if(northbound[1] == nullptr){  
                     VehicleBase *v = new VehicleBase(VehicleType::car, Direction::north);
                     northbound[0] = v;
                 }
-                else if (northbound[1].getVehicleType() == car){
+                else if (northbound[1]->getVehicleType() == VehicleType::car){
                     northbound[0] = northbound [1];
                 }
             }
             else
             { //truck
-                if(northbound[1] == null){  
+                if(northbound[1] == nullptr){  
                     VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::north);
                     northbound[0] = v;
                 }
-                else if (northbound[1].getVehicleType() == truck){
+                else if (northbound[1]->getVehicleType() == VehicleType::truck){
                     northbound[0] = northbound [1];
                 }
             }
@@ -176,31 +180,31 @@ int main(int argc, char *argv[])
             random.getRandom()); // chooses car type
             if (carType == 0)
             { //suv
-                if(southbound[1] == null){
+                if(southbound[1] == nullptr){
                     VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::south);
                     southbound[0] = v;
                 }
-                else if (southbound[1].getVehicleType() == suv){
+                else if (southbound[1]->getVehicleType() == VehicleType::suv){
                     southbound[0] = southbound [1];
                 }
             }
             else if (carType == 1)
             { //car
-                if(southbound[1] == null){  
+                if(southbound[1] == nullptr){  
                     VehicleBase *v = new VehicleBase(VehicleType::car, Direction::south);                    
                     southbound[0] = v;
                 }
-                else if (southbound[1].getVehicleType() == car){
+                else if (southbound[1]->getVehicleType() == VehicleType::car){
                     southbound[0] = southbound [1];
                 }
             }
             else
             { //truck
-                if(southbound[1] == null){  
+                if(southbound[1] == nullptr){  
                     VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::south);
                     southbound[0] = v;
                 }
-                else if (southbound[1].getVehicleType() == truck){
+                else if (southbound[1]->getVehicleType() == VehicleType::truck){
                     southbound[0] = southbound [1];
                 }
             }
@@ -212,31 +216,31 @@ int main(int argc, char *argv[])
             random.getRandom()); // chooses car type
             if (carType == 0) //suv
             { 
-                if(westbound[1] == null){  
+                if(westbound[1] == nullptr){  
                     VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::west);
                     westbound[0] = v;
                 }
-                else if (westbound[1].getVehicleType() == suv){
+                else if (westbound[1]->getVehicleType() == VehicleType::suv){
                     westbound[0] = westbound [1];
                 }
             }
             else if (carType == 1)
             { // car // needs an assigned direction
-                if(westbound[1] == null){  
+                if(westbound[1] == nullptr){  
                     VehicleBase *v = new VehicleBase(VehicleType::car, Direction::west);
                     westbound[0] = v;
                 }
-                else if (westbound[1].getVehicleType() == car){
+                else if (westbound[1]->getVehicleType() == VehicleType::car){
                     westbound[0] = westbound [1];
                 }
             }
             else
             { //truck
-                if(westbound[1] == null){  
+                if(westbound[1] == nullptr){  
                     VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::west);
                     westbound[0] = v;
                 }
-                else if (westbound[1].getVehicleType() == truck){
+                else if (westbound[1]->getVehicleType() == VehicleType::truck){
                     westbound[0] = westbound [1];
                 }
             }
@@ -323,3 +327,4 @@ int main(int argc, char *argv[])
         anim.draw(numClicks);
     }
 }
+
