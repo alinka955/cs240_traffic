@@ -80,8 +80,19 @@ int main(int argc, char *argv[])
     char dummy;
 
 
-    int i = 0;
     int numClicks = 0;
+    int carSizeEast = 0;
+    int suvSizeEast = 0;
+    int truckSizeEast = 0;
+    int carSizeNorth = 0;
+    int suvSizeNorth = 0;
+    int truckSizeNorth = 0;
+    int carSizeSouth = 0;
+    int suvSizeSouth = 0;
+    int truckSizeSouth = 0;
+    int carSizeWest = 0;
+    int suvSizeWest = 0;
+    int truckSizeWest = 0;
     anim.setVehiclesNorthbound(northbound);
     anim.setVehiclesWestbound(westbound);
     anim.setVehiclesSouthbound(southbound);
