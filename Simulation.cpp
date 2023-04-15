@@ -301,7 +301,7 @@ int main(int argc, char *argv[])
         anim.setVehiclesEastbound(eastbound);
 
 
-        
+	//switching traffic lights       
         if(greenEW && redNS){
             anim.setLightNorthSouth(LightColor::red);
             anim.setLightEastWest(LightColor::green);
@@ -329,7 +329,6 @@ int main(int argc, char *argv[])
 	}
 	
 
- 
         
         anim.draw(numClicks);
     }
