@@ -96,10 +96,10 @@ int main(int argc, char *argv[])
     {
         double randNum = random.getRandom();
         for(; i < halfsize-1; i++){
-            eastbound[i] = eastbound[i+1];
-            northbound[i] = northbound[i+1];
-            southbound[i] = southbound[i+1];
-            westbound[i] = westbound [i+1];
+            eastbound[i+1] = eastbound[i];
+            northbound[i+1] = northbound[i];
+            southbound[i+1] = southbound[i];
+            westbound[i+1] = westbound [i];
         }
         if (random.getRandom() < prob_new_vehicle_eastbound) // checks prob of eastbound spawn
         {
