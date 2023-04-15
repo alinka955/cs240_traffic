@@ -9,7 +9,6 @@
 #include <sstream>
 #include <fstream>
 #include "readinput.h"
-#include "intersection.h"
 #include <string>
 
 // decides if a vehicle is an suv, car, or truck
