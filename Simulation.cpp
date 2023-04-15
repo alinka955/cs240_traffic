@@ -91,8 +91,6 @@ int main(int argc, char *argv[])
     bool redEW;
     bool redNS = true;
 
-    bool pastRedEW = false;
-    bool pastGreenEW = false;
 
     size_t light_ticksEW = 0;
     size_t light_ticksNS = 0; //tracks light switches
@@ -267,13 +265,9 @@ int main(int argc, char *argv[])
         }
         else if (yellowNS && light_ticksNS >= yellow_north_south)
         {
-        //if (pastRedEW==false && pastGreenEW == true) {
             yellowNS = false;
             redNS = true;
             light_ticksNS = 0;
-            pastGreenEW == false;
-            pastRedEW = true;
-        //}
         }
 
 
@@ -285,20 +279,7 @@ int main(int argc, char *argv[])
             redEW = false;
             greenEW = true;
             light_ticksEW = 0;
-        }
-        
-
-        /*else if (yellowEW && light_ticks >= yellow_east_west && light_ticks <= green_east_west)
-        {
-        if (pastRedEW == true){
-
-            cout << light_ticks << endl;
-            yellowEW = false;
-            greenEW = true;
-            light_ticks = 0;
-            pastRedEW = false;
-            pastGreenEW = true;
-        }*/
+	}
 
         else if (greenEW && light_ticksEW >= green_east_west)
         {
@@ -319,38 +300,25 @@ int main(int argc, char *argv[])
         anim.setVehiclesSouthbound(southbound);
         anim.setVehiclesEastbound(eastbound);
 
-    cout<< "greenEW "<<greenEW << endl; //bool values for if its green, yellow, red
-    cout <<"greenNS " << greenNS << endl;
-    cout << "yellowNS " << yellowNS <<endl;
-    cout << "yellowEW " <<  yellowEW <<endl;
-    cout << "redEW " << redEW <<endl;
-    cout <<"redNS "<< redNS <<endl;
 
         
         if(greenEW && redNS){
-            cout << "greenEW" << endl;
             anim.setLightNorthSouth(LightColor::red);
             anim.setLightEastWest(LightColor::green);
         }
         else if(yellowEW && redNS){
-            cout << "yellowEW" << endl;
             anim.setLightNorthSouth(LightColor::red);
             anim.setLightEastWest(LightColor::yellow);
         }
         else if(greenNS && redEW){
-            cout << "greeNS" << endl;
             anim.setLightNorthSouth(LightColor::green);
             anim.setLightEastWest(LightColor::red);
         }
         else if (yellowNS && redEW){
-            cout << "yelowNS" << endl;
             anim.setLightNorthSouth(LightColor::yellow);
             anim.setLightEastWest(LightColor::red);
         }
-	/*else if (greenNS && greenEW){
-	    anim.setLightNorthSouth(LightColor::green);
-            anim.setLightEastWest(LightColor::green);
-	}*/
+
 	else if (greenNS && yellowEW){
             anim.setLightNorthSouth(LightColor::green);
             anim.setLightEastWest(LightColor::yellow);
@@ -359,16 +327,7 @@ int main(int argc, char *argv[])
             anim.setLightNorthSouth(LightColor::yellow);
             anim.setLightEastWest(LightColor::green);
 	}
-	/*else if (yellowNS && yellowEW) {
-            anim.setLightNorthSouth(LightColor::yellow);
-            anim.setLightEastWest(LightColor::yellow);
-	}*/
-	/*else if (redNS && redEW){
-cout << "Dddddddddddddddd"<< endl;
-       	    anim.setLightNorthSouth(LightColor::red);
-            anim.setLightEastWest(LightColor::red);
-	}*/
-	      
+	
 
  
         
