@@ -86,12 +86,17 @@ int main(int argc, char *argv[])
     int NSredTicks = green_east_west + yellow_east_west;
     int EWredTicks = green_north_south + yellow_north_south;
     bool greenEW = true; //bool values for if its green, yellow, red
-    bool greenNS = false;
-    bool yellowNS = false;
-    bool yellowEW = false;
-    bool redEW = false;
+    bool greenNS;
+    bool yellowNS;
+    bool yellowEW;
+    bool redEW;
     bool redNS = true;
-    size_t light_ticks = 0; //tracks light switches
+
+    bool pastRedEW = false;
+    bool pastGreenEW = false;
+
+    size_t light_ticksEW = 0;
+    size_t light_ticksNS = 0; //tracks light switches
     while (numClicks < maximum_simulated_time)
     {
         double randNum = random.getRandom();
@@ -248,59 +253,80 @@ int main(int argc, char *argv[])
         }
         std::cin.get(dummy);
         numClicks++;
-        light_ticks++; //checks conditions for NS, EW red, yellow, green
-        if (redNS && light_ticks >= NSredTicks){
+        light_ticksNS++; //checks conditions for NS, EW red, yellow, green
+	light_ticksEW++;
+        if (redNS && light_ticksNS >= NSredTicks){
             redNS = false;
-            yellowNS = true;
-            light_ticks = 0;
-        }
-        if (yellowNS && light_ticks >= yellow_north_south)
-        {
-            yellowNS = false;
             greenNS = true;
-            light_ticks = 0;
+            light_ticksNS = 0;
         }
-        if (greenNS && light_ticks >= green_north_south)
+        else if (greenNS && light_ticksNS >= green_north_south)
         {
             greenNS = false;
             yellowNS = true;
-            light_ticks = 0;
+            light_ticksNS = 0;
         }
-        if (yellowNS && light_ticks >= yellow_north_south)
+        else if (yellowNS && light_ticksNS >= yellow_north_south)
         {
+        //if (pastRedEW==false && pastGreenEW == true) {
             yellowNS = false;
             redNS = true;
-            light_ticks = 0;
+            light_ticksNS = 0;
+            pastGreenEW == false;
+            pastRedEW = true;
+        //}
         }
-        if (redEW && light_ticks >= EWredTicks)
+
+
+
+
+        if (redEW && light_ticksEW >= EWredTicks)
+
         {
             redEW = false;
-            yellowEW = true;
-            light_ticks = 0;
+            greenEW = true;
+            light_ticksEW = 0;
         }
-        if (yellowEW && light_ticks >= yellow_east_west)
+        
+
+        /*else if (yellowEW && light_ticks >= yellow_east_west && light_ticks <= green_east_west)
         {
+        if (pastRedEW == true){
+
+            cout << light_ticks << endl;
             yellowEW = false;
             greenEW = true;
             light_ticks = 0;
-        }
-        if (greenEW && light_ticks >= green_east_west)
+            pastRedEW = false;
+            pastGreenEW = true;
+        }*/
+
+        else if (greenEW && light_ticksEW >= green_east_west)
         {
             greenEW = false;
             yellowEW = true;
-            light_ticks = 0;
+            light_ticksEW = 0;
         }
-        if (yellowEW && light_ticks >= yellow_east_west)
+
+        else if (yellowEW && light_ticksEW >= yellow_east_west)
         {
             yellowEW = false;
             redEW = true;
-            light_ticks = 0;
+            light_ticksEW = 0;
         }
 
         anim.setVehiclesNorthbound(northbound); //reconstructs intersection with appropriate numClicks
         anim.setVehiclesWestbound(westbound);
         anim.setVehiclesSouthbound(southbound);
         anim.setVehiclesEastbound(eastbound);
+
+    cout<< "greenEW "<<greenEW << endl; //bool values for if its green, yellow, red
+    cout <<"greenNS " << greenNS << endl;
+    cout << "yellowNS " << yellowNS <<endl;
+    cout << "yellowEW " <<  yellowEW <<endl;
+    cout << "redEW " << redEW <<endl;
+    cout <<"redNS "<< redNS <<endl;
+
         
         if(greenEW && redNS){
             cout << "greenEW" << endl;
@@ -322,7 +348,30 @@ int main(int argc, char *argv[])
             anim.setLightNorthSouth(LightColor::yellow);
             anim.setLightEastWest(LightColor::red);
         }
-       
+	/*else if (greenNS && greenEW){
+	    anim.setLightNorthSouth(LightColor::green);
+            anim.setLightEastWest(LightColor::green);
+	}*/
+	else if (greenNS && yellowEW){
+            anim.setLightNorthSouth(LightColor::green);
+            anim.setLightEastWest(LightColor::yellow);
+	}
+	else if (yellowNS && greenEW){
+            anim.setLightNorthSouth(LightColor::yellow);
+            anim.setLightEastWest(LightColor::green);
+	}
+	/*else if (yellowNS && yellowEW) {
+            anim.setLightNorthSouth(LightColor::yellow);
+            anim.setLightEastWest(LightColor::yellow);
+	}*/
+	/*else if (redNS && redEW){
+cout << "Dddddddddddddddd"<< endl;
+       	    anim.setLightNorthSouth(LightColor::red);
+            anim.setLightEastWest(LightColor::red);
+	}*/
+	      
+
+ 
         
         anim.draw(numClicks);
     }
