@@ -20,7 +20,7 @@ int assignVehicle(double proportion_of_SUVs, double proportion_of_cars, double r
     { // suv is 0
         return 0;
     }
-    else if (proportion_of_SUVs < randNum < (proportion_of_SUVs + proportion_of_cars))
+    else if (proportion_of_SUVs < randNum && (randNum < (proportion_of_SUVs + proportion_of_cars)))
     { // car is 1
         return 1;
     }
@@ -125,6 +125,7 @@ int main(int argc, char *argv[])
         {
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars,
             random.getRandom()); // chooses car type
+            cout << carType << endl;
             if (carType == 0)
             { //suv
                 if (tempEastbound.empty())
@@ -269,6 +270,7 @@ int main(int argc, char *argv[])
 
         if(!tempEastbound.empty()){ //checks that temp is not empty
            eastbound[0] = tempEastbound.back(); //sets to actual value
+           //cout << eastbound[0] ->getVehicleType() << endl;
            tempEastbound.pop_back(); //removes temp
         }
         anim.setVehiclesNorthbound(northbound); // reconstructs intersection with appropriate numClicks
