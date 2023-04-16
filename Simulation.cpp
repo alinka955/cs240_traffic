@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 #include "Animator.h"
 #include "VehicleBase.h"
@@ -29,15 +27,7 @@ int assignVehicle(double proportion_of_SUVs, double proportion_of_cars, double r
     }
 }
 
-void moveCars(std::vector<VehicleBase*>& vehicles, int size){
-	if(size > 1){
-	   
-	   for(int i = size - 1; i > 0; i--){
-		vehicles[i] = vehicles[i - 1];
-		
-	  }
-	}
-}
+
 
 
 int main(int argc, char *argv[])
@@ -80,19 +70,8 @@ int main(int argc, char *argv[])
     char dummy;
 
 
+    int i = 0;
     int numClicks = 0;
-    int carSizeEast = 0;
-    int suvSizeEast = 0;
-    int truckSizeEast = 0;
-    int carSizeNorth = 0;
-    int suvSizeNorth = 0;
-    int truckSizeNorth = 0;
-    int carSizeSouth = 0;
-    int suvSizeSouth = 0;
-    int truckSizeSouth = 0;
-    int carSizeWest = 0;
-    int suvSizeWest = 0;
-    int truckSizeWest = 0;
     anim.setVehiclesNorthbound(northbound);
     anim.setVehiclesWestbound(westbound);
     anim.setVehiclesSouthbound(southbound);
@@ -116,110 +95,12 @@ int main(int argc, char *argv[])
     while (numClicks < maximum_simulated_time)
     {
         double randNum = random.getRandom();
-        moveCars(eastbound,halfsize);
-	if(eastbound[0] -> getVehicleType() == VehicleType::car){
-                carSizeEast++;
-           }
-           else if(eastbound[0] -> getVehicleType() == VehicleType::suv){
-                suvSizeEast++;
-           }
-           else if(eastbound[0] -> getVehicleType() == VehicleType::truck){
-                truckSizeEast++;
-           }
-
-           if(eastbound[1] -> getVehicleType() == VehicleType::car && (carSizeEast == 2) &&
-									 (eastbound[1] != nullptr) ){        
-                eastbound[0] = nullptr;
-                carSizeEast = 0;
-           }
-           else if(eastbound[1] -> getVehicleType() == VehicleType::suv && (suvSizeEast == 3) &&
-									 (eastbound[1] != nullptr)){    
-                eastbound[0] = nullptr;
-                suvSizeEast = 0;
-           }
-           else if(eastbound[1] -> getVehicleType() == VehicleType::truck && (truckSizeEast == 4) &&
-									 (eastbound[1] != nullptr)){
-                eastbound[0] = nullptr;
-                truckSizeEast = 0;
-           }
-	moveCars(northbound,halfsize);
-	if(northbound[0] -> getVehicleType() == VehicleType::car){
-                carSizeNorth++;
-           }
-           else if(northbound[0] -> getVehicleType() == VehicleType::suv){
-                suvSizeNorth++;
-           }
-           else if(northbound[0] -> getVehicleType() == VehicleType::truck){
-                truckSizeNorth++;
-           }
-
-           if(northbound[1] -> getVehicleType() == VehicleType::car && (carSizeNorth == 2) &&
-                                                                         (northbound[1] != nullptr) ){
-                northbound[0] = nullptr;
-                carSizeNorth = 0;
-           }
-           else if(northbound[1] -> getVehicleType() == VehicleType::suv && (suvSizeNorth == 3) &&
-                                                                         (northbound[1] != nullptr)){
-                northbound[0] = nullptr;
-                suvSizeNorth = 0;
-           }
-           else if(northbound[1] -> getVehicleType() == VehicleType::truck && (truckSizeNorth == 4) &&
-                                                                         (northbound[1] != nullptr)){
-                northbound[0] = nullptr;
-                truckSizeNorth = 0;
-	   }
-	moveCars(southbound,halfsize);
-	if(southbound[0] -> getVehicleType() == VehicleType::car){
-                carSizeSouth++;
-           }
-           else if(southbound[0] -> getVehicleType() == VehicleType::suv){
-                suvSizeSouth++;
-           }
-           else if(southbound[0] -> getVehicleType() == VehicleType::truck){
-                truckSizeSouth++;
-           }
-
-           if(southbound[1] -> getVehicleType() == VehicleType::car && (carSizeSouth == 2) &&
-                                                                         (southbound[1] != nullptr) ){
-                southbound[0] = nullptr;
-                carSizeSouth = 0;
-           }
-           else if(southbound[1] -> getVehicleType() == VehicleType::suv && (suvSizeSouth == 3) &&
-                                                                         (southbound[1] != nullptr)){
-                southbound[0] = nullptr;
-                suvSizeSouth = 0;
-           }
-           else if(southbound[1] -> getVehicleType() == VehicleType::truck && (truckSizeSouth == 4) &&
-                                                                         (southbound[1] != nullptr)){
-                southbound[0] = nullptr;
-                truckSizeSouth = 0;
-	   }
-	moveCars(westbound,halfsize);
-	if(westbound[0] -> getVehicleType() == VehicleType::car){
-                carSizeWest++;
-           }
-           else if(westbound[0] -> getVehicleType() == VehicleType::suv){
-                suvSizeWest++;
-           }
-           else if(westbound[0] -> getVehicleType() == VehicleType::truck){
-                truckSizeWest++;
-           }
-
-           if(westbound[1] -> getVehicleType() == VehicleType::car && (carSizeWest == 2) &&
-                                                                         (westbound[1] != nullptr) ){
-                westbound[0] = nullptr;
-                carSizeWest = 0;
-           }
-           else if(westbound[1] -> getVehicleType() == VehicleType::suv && (suvSizeWest == 3) &&
-                                                                         (westbound[1] != nullptr)){
-                westbound[0] = nullptr;
-                suvSizeWest = 0;
-           }
-           else if(westbound[1] -> getVehicleType() == VehicleType::truck && (truckSizeWest == 4) &&
-                                                                         (westbound[1] != nullptr)){
-                westbound[0] = nullptr;
-                truckSizeWest = 0;
-	   }
+        for(; i < halfsize-1; i++){
+            eastbound[i+1] = eastbound[i];
+            northbound[i+1] = northbound[i];
+            southbound[i+1] = southbound[i];
+            westbound[i+1] = westbound [i];
+        }
         if (random.getRandom() < prob_new_vehicle_eastbound) // checks prob of eastbound spawn
         {
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars, 
@@ -451,4 +332,3 @@ int main(int argc, char *argv[])
         anim.draw(numClicks);
     }
 }
-
