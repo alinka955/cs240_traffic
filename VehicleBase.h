@@ -3,7 +3,7 @@
 using namespace std;
 // enum: see http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-enum
 enum class Direction   {north, south, east, west};
-enum class turnDirection {right, straight},
+enum class turnDirection {right, straight};
 enum class VehicleType {car, suv, truck};
 enum class LightColor  {green, yellow, red};
 
