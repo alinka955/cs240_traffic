@@ -34,7 +34,6 @@ void moveCars(std::vector<VehicleBase*>& vehicles, int size){
 	   
 	   for(int i = size - 1; i > 0; i--){
 		vehicles[i] = vehicles[i - 1];
-		
 	  }
 	}
 }
@@ -367,7 +366,10 @@ int main(int argc, char *argv[])
         }
         std::cin.get(dummy);
         numClicks++;
-        light_ticksNS++; //checks conditions for NS, EW red, yellow, green
+        
+	///// traffic lights switch section
+
+	light_ticksNS++; //checks conditions for NS, EW red, yellow, green
 	light_ticksEW++;
         if (redNS && light_ticksNS >= NSredTicks){
             redNS = false;
@@ -386,9 +388,6 @@ int main(int argc, char *argv[])
             redNS = true;
             light_ticksNS = 0;
         }
-
-
-
 
         if (redEW && light_ticksEW >= EWredTicks)
 
