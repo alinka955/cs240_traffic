@@ -125,7 +125,6 @@ int main(int argc, char *argv[])
         {
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars,
             random.getRandom()); // chooses car type
-            cout << carType << endl;
             if (carType == 0)
             { //suv
                 if (tempEastbound.empty())
@@ -158,26 +157,41 @@ int main(int argc, char *argv[])
             }
             VehicleBase::vehicleCount++;
         }
-        /*
+        
         if (random.getRandom() < prob_new_vehicle_northbound)
         { // checks prob of northbound spawn
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars,
                                         random.getRandom()); // chooses car type
-            if (carType == 0)                                // suv north
-            {  
-                VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::north);
-                northbound[0] = v;
+            if (carType == 0)
+            { //suv
+                if (tempNorthbound.empty())
+                { //pushes to temp vector the correct size of an suv, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::north);
+                    tempNorthbound.push_back(v);
+                    tempNorthbound.push_back(v);
+                    tempNorthbound.push_back(v);
+                }
             }
-            else if (carType == 1) // car
+            else if (carType == 1)
             {
-                VehicleBase *v = new VehicleBase(VehicleType::car, Direction::north);
-                northbound[0] = v;
+                if (tempNorthbound.empty())
+                {
+                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::north);
+                    tempNorthbound.push_back(v);
+                    tempNorthbound.push_back(v);
+                }
             }
             else
-            { // truck
-                VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::north);
-                northbound[0] = v;
-            }
+            {
+                if (tempNorthbound.empty())
+                { 
+                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::north);
+                    tempNorthbound.push_back(v);
+                    tempNorthbound.push_back(v);
+                    tempNorthbound.push_back(v);
+                    tempNorthbound.push_back(v);
+                }
+	    }
             VehicleBase::vehicleCount++;
         }
         if (random.getRandom() < prob_new_vehicle_southbound)
@@ -185,44 +199,74 @@ int main(int argc, char *argv[])
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars,
                                         random.getRandom()); // chooses car type
             if (carType == 0)
-            { // suv
-                VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::south);
-                southbound[0] = v;
+            { //suv
+                if (tempSouthbound.empty())
+                { //pushes to temp vector the correct size of an suv, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::south);
+                    tempSouthbound.push_back(v);
+                    tempSouthbound.push_back(v);
+                    tempSouthbound.push_back(v);
+                }
             }
             else if (carType == 1)
-            { // car
-                VehicleBase *v = new VehicleBase(VehicleType::car, Direction::south);
-                southbound[0] = v;
+            {
+                if (tempSouthbound.empty())
+                {
+                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::south);
+                    tempSouthbound.push_back(v);
+                    tempSouthbound.push_back(v);
+                }
             }
             else
-            { // truck
-                VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::south);
-                southbound[0] = v;
-            }
+            {
+                if (tempSouthbound.empty())
+                { 
+                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::south);
+                    tempSouthbound.push_back(v);
+                    tempSouthbound.push_back(v);
+                    tempSouthbound.push_back(v);
+                    tempSouthbound.push_back(v);
+                }
+	    }
             VehicleBase::vehicleCount++;
         }
         if (random.getRandom() < prob_new_vehicle_westbound)
         {
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars,
                                         random.getRandom()); // chooses car type
-            if (carType == 0)                                // suv
-            {
-                VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::west);
-                westbound[0] = v;
+            if (carType == 0)
+            { //suv
+                if (tempWestbound.empty())
+                { //pushes to temp vector the correct size of an suv, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::west);
+                    tempWestbound.push_back(v);
+                    tempWestbound.push_back(v);
+                    tempWestbound.push_back(v);
+                }
             }
             else if (carType == 1)
-            { // car
-                VehicleBase *v = new VehicleBase(VehicleType::car, Direction::west);
-                westbound[0] = v;
+            {
+                if (tempWestbound.empty())
+                {
+                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::west);
+                    tempWestbound.push_back(v);
+                    tempWestbound.push_back(v);
+                }
             }
             else
-            { // truck
-                VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::west);
-                westbound[0] = v;
-            }
+            {
+                if (tempWestbound.empty())
+                { 
+                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::west);
+                    tempWestbound.push_back(v);
+                    tempWestbound.push_back(v);
+                    tempWestbound.push_back(v);
+                    tempWestbound.push_back(v);
+                }
+	    }
             VehicleBase::vehicleCount++;
         } //end of adding cars
-        */
+        
         std::cin.get(dummy);
         numClicks++;
         light_ticksNS++; // checks conditions for NS, EW red, yellow, green
@@ -270,8 +314,19 @@ int main(int argc, char *argv[])
 
         if(!tempEastbound.empty()){ //checks that temp is not empty
            eastbound[0] = tempEastbound.back(); //sets to actual value
-           //cout << eastbound[0] ->getVehicleType() << endl;
            tempEastbound.pop_back(); //removes temp
+        }
+	if(!tempNorthbound.empty()){ //checks that temp is not empty
+           northbound[0] = tempNorthbound.back(); //sets to actual value
+           tempNorthbound.pop_back(); //removes temp
+        }
+	if(!tempSouthbound.empty()){ //checks that temp is not empty
+           southbound[0] = tempSouthbound.back(); //sets to actual value
+           tempSouthbound.pop_back(); //removes temp
+        }
+	if(!tempWestbound.empty()){ //checks that temp is not empty
+           westbound[0] = tempWestbound.back(); //sets to actual value
+           tempWestbound.pop_back(); //removes temp
         }
         anim.setVehiclesNorthbound(northbound); // reconstructs intersection with appropriate numClicks
         anim.setVehiclesWestbound(westbound);
@@ -313,3 +368,4 @@ int main(int argc, char *argv[])
         anim.draw(numClicks);
     }
 }
+
