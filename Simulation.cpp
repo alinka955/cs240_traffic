@@ -27,6 +27,20 @@ int assignVehicle(double proportion_of_SUVs, double proportion_of_cars, double r
     }
 }
 
+void moveCars(std::vector<VehicleBase *> &vehicles, int size)
+{
+    if (size > 1)
+    {
+
+        for (int i = size - 1; i > 0; i--)
+        {
+            vehicles[i] = vehicles[i - 1];
+        }
+    }
+    vehicles[0] = nullptr;
+}
+
+
 
 
 
