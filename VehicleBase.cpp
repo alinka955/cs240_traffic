@@ -7,17 +7,19 @@ int VehicleBase::vehicleCount = 0;
 
 
 //intializes
-VehicleBase::VehicleBase(VehicleType type, Direction direction)
+VehicleBase::VehicleBase(VehicleType type, Direction direction, Direction turnDirection)
     : vehicleID(VehicleBase::vehicleCount++), 
       vehicleType(type),
-      vehicleDirection(direction)
+      vehicleDirection(direction),
+      vehicleTurnDirection(turnDirection)
 {}
 
 //copy constructor
 VehicleBase::VehicleBase(const VehicleBase& other)
     : vehicleID(other.vehicleID),
       vehicleType(other.vehicleType),
-      vehicleDirection(other.vehicleDirection)
+      vehicleDirection(other.vehicleDirection),
+      vehicleTurnDirection(other.vehicleTurnDirection)
 {}
 
 //destructor
@@ -31,6 +33,7 @@ VehicleBase& VehicleBase::operator=(const VehicleBase& other){
     vehicleID = other.vehicleID;
     vehicleType = other.vehicleType;
     vehicleDirection = other.vehicleDirection;
+    vehicleTurnDirection = other.vehicleTurnDirection;
     return *this;
 }
 
@@ -39,7 +42,8 @@ VehicleBase::VehicleBase(VehicleBase&& other)noexcept
     : 
     vehicleID(other.vehicleID),
     vehicleType(other.vehicleType),
-    vehicleDirection(other.vehicleDirection){
+    vehicleDirection(other.vehicleDirection),
+    vehicleTurnDirection(other.vehicleTurnDirection){
         other.vehicleID = 0;
     }
 
@@ -51,6 +55,7 @@ VehicleBase& VehicleBase::operator=(VehicleBase&& other)noexcept{
     vehicleID = other.vehicleID;
     vehicleType = other.vehicleType;
     vehicleDirection = other.vehicleDirection;
+    vehicleTurnDirection = other.vehicleTurnDirection;
     other.vehicleID = 0;
     return *this;
 }
