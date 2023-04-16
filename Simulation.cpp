@@ -9,6 +9,36 @@
 #include "readinput.h"
 #include <string>
 
+
+// decides what direction the car will be going (0 for right or 1 for straight)
+int getTurnDirection(int carType, double proportion_right_turn_SUVs, double proportion_right_turn_trucks, double proportion_right_turn_cars, double randNum){
+
+if (carType == 0){
+	if (randNum < proportion_right_turn_SUVs){
+		return 0;
+	}
+	else{
+		return 1;
+	}
+}
+if (carType == 1){
+        if (randNum < proportion_right_turn_cars){
+                return 0;
+        }
+        else{
+                return 1;
+        }
+}
+if (carType == 2){
+        if (randNum < proportion_right_turn_trucks){
+                return 0;
+        }
+        else{
+                return 1;
+        }
+}
+}
+
 // decides if a vehicle is an suv, car, or truck
 int assignVehicle(double proportion_of_SUVs, double proportion_of_cars, double randNum)
 {
@@ -125,17 +155,43 @@ int main(int argc, char *argv[])
         {
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars,
             random.getRandom()); // chooses car type
-            if (carType == 0)
+         
+	    turnDirect = getTurnDirection(int carType, proportion_right_turn_SUVs, proportion_right_turn_trucks, proportion_right_turn_cars, random.getRandom());
+
+	    if (carType == 0 && turnDirect == 0) //spawns SUV and turns right 
             { //suv
                 if (tempEastbound.empty())
                 { //pushes to temp vector the correct size of an suv, first checks if temp is empty
-                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::east);
+                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::east, turnDirection::right);
                     tempEastbound.push_back(v);
                     tempEastbound.push_back(v);
                     tempEastbound.push_back(v);
                 }
             }
-            else if (carType == 1)
+	    
+            if (carType == 0 && turnDirect == 0) //spawns SUV and goes straight
+            { //suv
+                if (tempEastbound.empty())
+                { //pushes to temp vector the correct size of an suv, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::east, turnDirection::straight);
+                    tempEastbound.push_back(v);
+                    tempEastbound.push_back(v);
+                    tempEastbound.push_back(v);
+                }
+            }	
+if (carType == 0 && turnDirect == 1) //spawns SUV and goes straight
+            { //suv
+                if (tempEastbound.empty())
+                { //pushes to temp vector the correct size of an suv, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::east, turnDirection::straight);
+                    tempEastbound.push_back(v);
+                    tempEastbound.push_back(v);
+                    tempEastbound.push_back(v);
+                }
+            }
+
+
+            else if (carType == 1 && turnDirect == 0)
             {
                 if (tempEastbound.empty())
                 {

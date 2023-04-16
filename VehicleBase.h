@@ -3,6 +3,7 @@
 using namespace std;
 // enum: see http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-enum
 enum class Direction   {north, south, east, west};
+enum class turnDirection {right, straight},
 enum class VehicleType {car, suv, truck};
 enum class LightColor  {green, yellow, red};
 
@@ -15,9 +16,10 @@ class VehicleBase
       int         vehicleID;
       VehicleType vehicleType;
       Direction   vehicleDirection;
+      turnDirection   vehicleTurnDirection;
 
    public:
-      VehicleBase(VehicleType type, Direction originalDirection);
+      VehicleBase(VehicleType type, Direction originalDirection, turnDirection vehicleTurnDirection);
       VehicleBase(const VehicleBase& other);
       ~VehicleBase();
       VehicleBase(VehicleBase&& other)noexcept;
@@ -28,6 +30,8 @@ class VehicleBase
 
       inline VehicleType getVehicleType() const { return this->vehicleType; }
       inline Direction   getVehicleOriginalDirection() const { return this->vehicleDirection; }
+      inline turnDirection   getVehicleTurnDirection() const { return this->vehicleTurnDirection; }
+
 };
 
 #endif
