@@ -109,6 +109,10 @@ int main(int argc, char *argv[])
     while (numClicks < maximum_simulated_time)
     {
         double randNum = random.getRandom();
+	moveCars(eastbound, halfsize);
+        moveCars(westbound, halfsize);
+        moveCars(northbound, halfsize);
+        moveCars(southbound, halfsize);
         for(; i < halfsize-1; i++){
             eastbound[i+1] = eastbound[i];
             northbound[i+1] = northbound[i];
