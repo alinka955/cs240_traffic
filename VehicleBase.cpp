@@ -59,7 +59,7 @@ VehicleBase& VehicleBase::operator=(VehicleBase&& other)noexcept{
     other.vehicleID = 0;
     return *this;
 }
-
+/*
 int main (){
 	VehicleBase v1(VehicleType::car, Direction::east, turnDirection::right);
 	VehicleBase v2(v1);
@@ -67,5 +67,6 @@ int main (){
 	std::cout << &v1 << std::endl;
 	std::cout << &v2 << std::endl;	
 }
+*/
 
 #endif
