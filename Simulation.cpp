@@ -71,14 +71,21 @@ int assignVehicle(double proportion_of_SUVs, double proportion_of_cars, double r
     }
 }
 
-void moveCars(std::vector<VehicleBase *> &vehicles, int size)
-{
+void moveCars(std::vector<VehicleBase *> &vehicles, int size, int midpoint, bool checkGo,
+         bool checkSlow, bool checkStop){
     if (size > 1)
     {
 
-        for (int i = size * 2 + 1; i > 0; i--)
+        for (int i = size - 1; i > 0; i--)
         {
-            vehicles[i] = vehicles[i - 1];
+            if((checkGo == true && vehicles[midpoint] != nullptr) || (checkSlow == true && vehicles[midpoint-1] !=     
+                                nullptr && vehicles [midpoint - 1] != vehicles[midpoint - 2 ]) ||
+                                 (checkStop == true && i < midpoint)){
+
+                   vehicles[i] = vehicles[i-1];
+
+            }
+           // vehicles[i] = vehicles[i - 1];
         }
     }
     vehicles[0] = nullptr;
@@ -151,10 +158,10 @@ int main(int argc, char *argv[])
     while (numClicks < maximum_simulated_time)
     {
         double randNum = random.getRandom();
-        moveCars(eastbound, halfsize);
-        moveCars(westbound, halfsize);
-        moveCars(northbound, halfsize);
-        moveCars(southbound, halfsize);
+        moveCars(eastbound, eastbound.size(), halfsize, greenEW, yellowEW, redEW);
+        moveCars(westbound, westbound.size(), halfsize, greenEW, yellowEW, redEW);
+        moveCars(northbound, northbound.size(), halfsize, greenNS, yellowNS, redEW);
+        moveCars(southbound, southbound.size(), halfsize, greenNS, yellowNS, redEW);
         if (random.getRandom() < prob_new_vehicle_eastbound) // checks prob of eastbound spawn
         {
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars,
