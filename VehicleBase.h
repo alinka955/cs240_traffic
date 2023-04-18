@@ -31,7 +31,6 @@ class VehicleBase
       inline VehicleType getVehicleType() const { return this->vehicleType; }
       inline Direction   getVehicleOriginalDirection() const { return this->vehicleDirection; }
       inline turnDirection   getVehicleTurnDirection() const { return this->vehicleTurnDirection; }
-
 };
 
 #endif

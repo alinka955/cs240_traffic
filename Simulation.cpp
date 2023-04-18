@@ -414,6 +414,11 @@ int main(int argc, char *argv[])
         anim.setVehiclesSouthbound(southbound);
         anim.setVehiclesEastbound(eastbound);
 
+	// move vehicles based on their turnDirection and lights of the traffic
+	
+
+
+
         if (greenEW && redNS)
         {
             anim.setLightNorthSouth(LightColor::red);
