@@ -14,41 +14,41 @@ int getTurnDirection(int carType, double proportion_right_turn_SUVs, double prop
 {
 
     if (carType == 0)
-    { //if suv, car or straight
+    { // if suv, car or straight
         if (randNum < proportion_right_turn_SUVs)
         {
-            //cout << "right: suv" << endl;
+            // cout << "right: suv" << endl;
             return 0;
         }
         else
-        {   
-            //cout << "straight: suv" << endl;
+        {
+            // cout << "straight: suv" << endl;
             return 1;
         }
     }
     if (carType == 1)
-    {//if car, right or straight
+    { // if car, right or straight
         if (randNum < proportion_right_turn_cars)
         {
-            //cout << "right: car" << endl;
+            // cout << "right: car" << endl;
             return 0;
         }
         else
         {
-            //cout << "straight: car" << endl;
+            // cout << "straight: car" << endl;
             return 1;
         }
     }
     if (carType == 2)
-    { //if truck, assign right or straight
+    { // if truck, assign right or straight
         if (randNum < proportion_right_turn_trucks)
         {
-            //cout << "right: truck" << endl;
+            // cout << "right: truck" << endl;
             return 0;
         }
         else
         {
-            //cout << "straight: truck" << endl;
+            // cout << "straight: truck" << endl;
             return 1;
         }
     }
@@ -72,20 +72,20 @@ int assignVehicle(double proportion_of_SUVs, double proportion_of_cars, double r
 }
 
 void moveCars(std::vector<VehicleBase *> &vehicles, int size, int midpoint, bool checkGo,
-         bool checkSlow, bool checkStop){
+              bool checkSlow, bool checkStop)
+{
     if (size > 1)
     {
 
         for (int i = size - 1; i > 0; i--)
         {
-            if((checkGo == true && vehicles[midpoint] != nullptr) || (checkSlow == true && vehicles[midpoint-1] !=     
-                                nullptr && vehicles [midpoint - 1] != vehicles[midpoint - 2 ]) ||
-                                 (checkStop == true && i < midpoint)){
+            if ((checkGo == true && vehicles[midpoint] != nullptr) || (checkSlow == true && vehicles[midpoint - 1] != nullptr && vehicles[midpoint - 1] != vehicles[midpoint - 2]) ||
+                (checkStop == true && i < midpoint))
+            {
 
-                   vehicles[i] = vehicles[i-1];
-
+                vehicles[i] = vehicles[i - 1];
             }
-           // vehicles[i] = vehicles[i - 1];
+            // vehicles[i] = vehicles[i - 1];
         }
     }
     vehicles[0] = nullptr;
@@ -382,7 +382,7 @@ int main(int argc, char *argv[])
 
             if (carType == 0 && turnDirect == 0) // spawns SUV and turns right
             {
-                if (tempEastbound.empty())
+                if (tempWestbound.empty())
                 { // pushes to temp vector the correct size of an SUV, first checks if temp is empty
                     VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::west, turnDirection::right);
                     tempWestbound.push_back(v);
@@ -392,7 +392,7 @@ int main(int argc, char *argv[])
             }
             else if (carType == 0 && turnDirect == 1) // spawns SUV and goes straight
             {
-                if (tempEastbound.empty())
+                if (tempWestbound.empty())
                 { // pushes to temp vector the correct size of an SUV, first checks if temp is empty
                     VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::west, turnDirection::straight);
                     tempWestbound.push_back(v);
@@ -403,7 +403,7 @@ int main(int argc, char *argv[])
 
             else if (carType == 1 && turnDirect == 0) // spawns car and turns right
             {
-                if (tempEastbound.empty())
+                if (tempWestbound.empty())
                 { // pushes to temp vector the correct size of a car, first checks if temp is empty
                     VehicleBase *v = new VehicleBase(VehicleType::car, Direction::west, turnDirection::right);
                     tempWestbound.push_back(v);
@@ -412,7 +412,7 @@ int main(int argc, char *argv[])
             }
             else if (carType == 1 && turnDirect == 1) // spawns car and goes straight
             {
-                if (tempEastbound.empty())
+                if (tempWestbound.empty())
                 { // pushes to temp vector the correct size of a car, first checks if temp is empty
                     VehicleBase *v = new VehicleBase(VehicleType::car, Direction::west, turnDirection::straight);
                     tempWestbound.push_back(v);
@@ -421,7 +421,7 @@ int main(int argc, char *argv[])
             }
             else if (carType == 2 && turnDirect == 0) // spawns car and goes straight
             {
-                if (tempEastbound.empty())
+                if (tempWestbound.empty())
                 { // pushes to temp vector the correct size of a car, first checks if temp is empty
                     VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::west, turnDirection::right);
                     tempWestbound.push_back(v);
@@ -444,134 +444,131 @@ int main(int argc, char *argv[])
             VehicleBase::vehicleCount++;
         }
 
-    // end of adding cars
+        // end of adding cars
 
-    std::cin.get(dummy);
-    numClicks++;
-    light_ticksNS++; // checks conditions for NS, EW red, yellow, green
-    light_ticksEW++;
-    if (redNS && light_ticksNS >= NSredTicks)
-    {
-        redNS = false;
-        greenNS = true;
-        light_ticksNS = 0;
-    }
-    else if (greenNS && light_ticksNS >= green_north_south)
-    {
-        greenNS = false;
-        yellowNS = true;
-        light_ticksNS = 0;
-    }
-    else if (yellowNS && light_ticksNS >= yellow_north_south)
-    {
-        yellowNS = false;
-        redNS = true;
-        light_ticksNS = 0;
-    }
+        std::cin.get(dummy);
+        numClicks++;
+        light_ticksNS++; // checks conditions for NS, EW red, yellow, green
+        light_ticksEW++;
+        if (redNS && light_ticksNS >= NSredTicks)
+        {
+            redNS = false;
+            greenNS = true;
+            light_ticksNS = 0;
+        }
+        else if (greenNS && light_ticksNS >= green_north_south)
+        {
+            greenNS = false;
+            yellowNS = true;
+            light_ticksNS = 0;
+        }
+        else if (yellowNS && light_ticksNS >= yellow_north_south)
+        {
+            yellowNS = false;
+            redNS = true;
+            light_ticksNS = 0;
+        }
 
-    if (redEW && light_ticksEW >= EWredTicks)
+        if (redEW && light_ticksEW >= EWredTicks)
 
-    {
-        redEW = false;
-        greenEW = true;
-        light_ticksEW = 0;
-    }
+        {
+            redEW = false;
+            greenEW = true;
+            light_ticksEW = 0;
+        }
 
-    else if (greenEW && light_ticksEW >= green_east_west)
-    {
-        greenEW = false;
-        yellowEW = true;
-        light_ticksEW = 0;
-    }
+        else if (greenEW && light_ticksEW >= green_east_west)
+        {
+            greenEW = false;
+            yellowEW = true;
+            light_ticksEW = 0;
+        }
 
-    else if (yellowEW && light_ticksEW >= yellow_east_west)
-    {
-        yellowEW = false;
-        redEW = true;
-        light_ticksEW = 0;
-    }
+        else if (yellowEW && light_ticksEW >= yellow_east_west)
+        {
+            yellowEW = false;
+            redEW = true;
+            light_ticksEW = 0;
+        }
 
-    if (!tempEastbound.empty())
-    {                                        // checks that temp is not empty
-        eastbound[0] = tempEastbound.back(); // sets to actual value
-        tempEastbound.pop_back();            // removes temp
-    }
-    if (!tempNorthbound.empty())
-    {                                          // checks that temp is not empty
-        northbound[0] = tempNorthbound.back(); // sets to actual value
-        tempNorthbound.pop_back();             // removes temp
-    }
-    if (!tempSouthbound.empty())
-    {                                          // checks that temp is not empty
-        southbound[0] = tempSouthbound.back(); // sets to actual value
-        tempSouthbound.pop_back();             // removes temp
-    }
-    if (!tempWestbound.empty())
-    {                                        // checks that temp is not empty
-        westbound[0] = tempWestbound.back(); // sets to actual value
-        tempWestbound.pop_back();            // removes temp
-    }
+        if (!tempEastbound.empty())
+        {                                        // checks that temp is not empty
+            eastbound[0] = tempEastbound.back(); // sets to actual value
+            tempEastbound.pop_back();            // removes temp
+        }
+        if (!tempNorthbound.empty())
+        {                                          // checks that temp is not empty
+            northbound[0] = tempNorthbound.back(); // sets to actual value
+            tempNorthbound.pop_back();             // removes temp
+        }
+        if (!tempSouthbound.empty())
+        {                                          // checks that temp is not empty
+            southbound[0] = tempSouthbound.back(); // sets to actual value
+            tempSouthbound.pop_back();             // removes temp
+        }
+        if (!tempWestbound.empty())
+        {                                        // checks that temp is not empty
+            westbound[0] = tempWestbound.back(); // sets to actual value
+            tempWestbound.pop_back();            // removes temp
+        }
 
-    if ((dynamic_cast<VehicleBase *>(eastbound[halfsize + 1]) != nullptr) && ((eastbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
-    {
-        southbound[halfsize + 2] = std::move(eastbound[halfsize + 1]);
-        eastbound[halfsize + 1] = nullptr;
-    }
-    if ((dynamic_cast<VehicleBase *>(westbound[halfsize + 1]) != nullptr) && ((westbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
-    {
-        northbound[halfsize + 2] = std::move(westbound[halfsize + 1]);
-        westbound[halfsize + 1] = nullptr;
-    }
-    if ((dynamic_cast<VehicleBase *>(northbound[halfsize + 1]) != nullptr) && ((northbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
-    {
-        eastbound[halfsize + 2] = std::move(northbound[halfsize + 1]);
-        northbound[halfsize + 1] = nullptr;
-    }
-    if ((dynamic_cast<VehicleBase *>(southbound[halfsize + 1]) != nullptr) && ((southbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
-    {
-        westbound[halfsize + 2] = std::move(southbound[halfsize + 1]);
-        southbound[halfsize + 1] = nullptr;
-    }
+        if ((dynamic_cast<VehicleBase *>(eastbound[halfsize + 1]) != nullptr) && ((eastbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
+        {
+            southbound[halfsize + 2] = std::move(eastbound[halfsize + 1]);
+            eastbound[halfsize + 1] = nullptr;
+        }
+        if ((dynamic_cast<VehicleBase *>(westbound[halfsize + 1]) != nullptr) && ((westbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
+        {
+            northbound[halfsize + 2] = std::move(westbound[halfsize + 1]);
+            westbound[halfsize + 1] = nullptr;
+        }
+        if ((dynamic_cast<VehicleBase *>(northbound[halfsize + 1]) != nullptr) && ((northbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
+        {
+            eastbound[halfsize + 2] = std::move(northbound[halfsize + 1]);
+            northbound[halfsize + 1] = nullptr;
+        }
+        if ((dynamic_cast<VehicleBase *>(southbound[halfsize + 1]) != nullptr) && ((southbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
+        {
+            westbound[halfsize + 2] = std::move(southbound[halfsize + 1]);
+            southbound[halfsize + 1] = nullptr;
+        }
 
-    anim.setVehiclesNorthbound(northbound); // reconstructs intersection with appropriate numClicks
-    anim.setVehiclesWestbound(westbound);
-    anim.setVehiclesSouthbound(southbound);
-    anim.setVehiclesEastbound(eastbound);
+        anim.setVehiclesNorthbound(northbound); // reconstructs intersection with appropriate numClicks
+        anim.setVehiclesWestbound(westbound);
+        anim.setVehiclesSouthbound(southbound);
+        anim.setVehiclesEastbound(eastbound);
 
-    if (greenEW && redNS)
-    {
-        anim.setLightNorthSouth(LightColor::red);
-        anim.setLightEastWest(LightColor::green);
-    }
-    else if (yellowEW && redNS)
-    {
-        anim.setLightNorthSouth(LightColor::red);
-        anim.setLightEastWest(LightColor::yellow);
-    }
-    else if (greenNS && redEW)
-    {
-        anim.setLightNorthSouth(LightColor::green);
-        anim.setLightEastWest(LightColor::red);
-    }
-    else if (yellowNS && redEW)
-    {
-        anim.setLightNorthSouth(LightColor::yellow);
-        anim.setLightEastWest(LightColor::red);
-    }
+        if (greenEW && redNS)
+        {
+            anim.setLightNorthSouth(LightColor::red);
+            anim.setLightEastWest(LightColor::green);
+        }
+        else if (yellowEW && redNS)
+        {
+            anim.setLightNorthSouth(LightColor::red);
+            anim.setLightEastWest(LightColor::yellow);
+        }
+        else if (greenNS && redEW)
+        {
+            anim.setLightNorthSouth(LightColor::green);
+            anim.setLightEastWest(LightColor::red);
+        }
+        else if (yellowNS && redEW)
+        {
+            anim.setLightNorthSouth(LightColor::yellow);
+            anim.setLightEastWest(LightColor::red);
+        }
 
-    else if (greenNS && yellowEW)
-    {
-        anim.setLightNorthSouth(LightColor::green);
-        anim.setLightEastWest(LightColor::yellow);
-    }
-    else if (yellowNS && greenEW)
-    {
-        anim.setLightNorthSouth(LightColor::yellow);
-        anim.setLightEastWest(LightColor::green);
-    }
-    anim.draw(numClicks);
+        else if (greenNS && yellowEW)
+        {
+            anim.setLightNorthSouth(LightColor::green);
+            anim.setLightEastWest(LightColor::yellow);
+        }
+        else if (yellowNS && greenEW)
+        {
+            anim.setLightNorthSouth(LightColor::yellow);
+            anim.setLightEastWest(LightColor::green);
+        }
+        anim.draw(numClicks);
     }
 }
-
-
-
