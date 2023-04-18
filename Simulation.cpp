@@ -17,12 +17,12 @@ int getTurnDirection(int carType, double proportion_right_turn_SUVs, double prop
     { //if suv, car or straight
         if (randNum < proportion_right_turn_SUVs)
         {
-            cout << "right: suv" << endl;
+            //cout << "right: suv" << endl;
             return 0;
         }
         else
         {   
-            cout << "straight: suv" << endl;
+            //cout << "straight: suv" << endl;
             return 1;
         }
     }
@@ -30,12 +30,12 @@ int getTurnDirection(int carType, double proportion_right_turn_SUVs, double prop
     {//if car, right or straight
         if (randNum < proportion_right_turn_cars)
         {
-            cout << "right: car" << endl;
+            //cout << "right: car" << endl;
             return 0;
         }
         else
         {
-            cout << "straight: car" << endl;
+            //cout << "straight: car" << endl;
             return 1;
         }
     }
@@ -43,12 +43,12 @@ int getTurnDirection(int carType, double proportion_right_turn_SUVs, double prop
     { //if truck, assign right or straight
         if (randNum < proportion_right_turn_trucks)
         {
-            cout << "right: truck" << endl;
+            //cout << "right: truck" << endl;
             return 0;
         }
         else
         {
-            cout << "straight: truck" << endl;
+            //cout << "straight: truck" << endl;
             return 1;
         }
     }
@@ -71,22 +71,14 @@ int assignVehicle(double proportion_of_SUVs, double proportion_of_cars, double r
     }
 }
 
-void moveCars(std::vector<VehicleBase *> &vehicles, int size, int midpoint, bool checkGo,
-         bool checkSlow, bool checkStop){
+void moveCars(std::vector<VehicleBase *> &vehicles, int size)
+{
     if (size > 1)
     {
 
-        for (int i = size - 1; i > 0; i--)
+        for (int i = size * 2 + 1; i > 0; i--)
         {
-            if((checkGo == true) || (checkSlow == true && vehicles[midpoint + 2] ==
-                        vehicles[midpoint + 1] &&
-                        vehicles[midpoint + 1] != nullptr && vehicles[midpoint] != nullptr) ||
-                                 (checkStop == true && i < midpoint)){
-
-                   vehicles[i] = vehicles[i-1];
-
-            }
-           // vehicles[i] = vehicles[i - 1];
+            vehicles[i] = vehicles[i - 1];
         }
     }
     vehicles[0] = nullptr;
@@ -99,10 +91,10 @@ int main(int argc, char *argv[])
     std::map<std::string, double> inputDict = readinput.getDict(argv[1]);
     // find the values of each variable, read from input
     size_t halfsize = inputDict["number_of_sections_before_intersection:"];
-    double maximum_simulated_time = inputDict["maximum_simulated_time:"];
+    size_t maximum_simulated_time = inputDict["maximum_simulated_time:"];
 
-    double green_east_west = inputDict["green_east_west:"];
-    double green_north_south = inputDict["green_north_south:"];
+    size_t green_east_west = inputDict["green_east_west:"];
+    size_t green_north_south = inputDict["green_north_south:"];
 
     double prob_new_vehicle_eastbound = inputDict["prob_new_vehicle_eastbound:"];
     double prob_new_vehicle_northbound = inputDict["prob_new_vehicle_northbound:"];
@@ -116,8 +108,8 @@ int main(int argc, char *argv[])
     double proportion_right_turn_cars = inputDict["proportion_right_turn_cars:"];
     double proportion_right_turn_trucks = inputDict["proportion_right_turn_trucks:"];
 
-    double yellow_east_west = inputDict["yellow_east_west:"];
-    double yellow_north_south = inputDict["yellow_north_south:"];
+    size_t yellow_east_west = inputDict["yellow_east_west:"];
+    size_t yellow_north_south = inputDict["yellow_north_south:"];
 
     double proportion_left_turn_SUVs = inputDict["proportion_left_turn_SUVs:"];
     double proportion_left_turn_cars = inputDict["proportion_left_turn_cars:"];
@@ -130,12 +122,12 @@ int main(int argc, char *argv[])
     std::vector<VehicleBase *> southbound(halfsize * 2 + 2, nullptr);
     std::vector<VehicleBase *> northbound(halfsize * 2 + 2, nullptr);
     char dummy;
+
     std::vector<VehicleBase *> tempWestbound;
     std::vector<VehicleBase *> tempEastbound;
     std::vector<VehicleBase *> tempSouthbound;
     std::vector<VehicleBase *> tempNorthbound;
 
-    int i = 0;
     int numClicks = 0;
     anim.setVehiclesNorthbound(northbound);
     anim.setVehiclesWestbound(westbound);
@@ -147,11 +139,11 @@ int main(int argc, char *argv[])
     RandomClass random(std::stoi(argv[2]));
     int NSredTicks = green_east_west + yellow_east_west;
     int EWredTicks = green_north_south + yellow_north_south;
-    bool greenEW = true; // bool values for if its green, yellow, red
-    bool greenNS;
-    bool yellowNS;
-    bool yellowEW;
-    bool redEW;
+    bool greenEW = true;  // bool values for if its green, yellow, red
+    bool greenNS = false; // initialized at green for east/west and red for north/south
+    bool yellowNS = false;
+    bool yellowEW = false;
+    bool redEW = false;
     bool redNS = true;
 
     size_t light_ticksEW = 0;
@@ -159,16 +151,10 @@ int main(int argc, char *argv[])
     while (numClicks < maximum_simulated_time)
     {
         double randNum = random.getRandom();
-        moveCars(eastbound, eastbound.size(), halfsize, greenEW, yellowEW, redEW);
-        moveCars(westbound, westbound.size(), halfsize, greenEW, yellowEW, redEW);
-        moveCars(northbound, northbound.size(), halfsize, greenNS, yellowNS, redEW);
-        moveCars(southbound, southbound.size(), halfsize, greenNS, yellowNS, redEW);
-        {
-            eastbound[i + 1] = eastbound[i];
-            northbound[i + 1] = northbound[i];
-            southbound[i + 1] = southbound[i];
-            westbound[i + 1] = westbound[i];
-        }
+        moveCars(eastbound, halfsize);
+        moveCars(westbound, halfsize);
+        moveCars(northbound, halfsize);
+        moveCars(southbound, halfsize);
         if (random.getRandom() < prob_new_vehicle_eastbound) // checks prob of eastbound spawn
         {
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars,
@@ -204,11 +190,10 @@ int main(int argc, char *argv[])
                     VehicleBase *v = new VehicleBase(VehicleType::car, Direction::east, turnDirection::right);
                     tempEastbound.push_back(v);
                     tempEastbound.push_back(v);
-                    tempEastbound.push_back(v);
                 }
             }
 
-            else if (carType == 1 && turnDirect == 1) //spawns car and goes straight
+            else if (carType == 1 && turnDirect == 1) // spawns car and goes straight
             {
                 if (tempEastbound.empty())
                 {
@@ -217,7 +202,7 @@ int main(int argc, char *argv[])
                     tempEastbound.push_back(v);
                 }
             }
-            else if (carType == 2 && turnDirect == 0) //truck and right
+            else if (carType == 2 && turnDirect == 0) // truck and right
             {
                 if (tempEastbound.empty())
                 {
@@ -228,7 +213,8 @@ int main(int argc, char *argv[])
                     tempEastbound.push_back(v);
                 }
             }
-            else{ //truck and straight
+            else
+            { // truck and straight
                 if (tempEastbound.empty())
                 {
                     VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::east, turnDirection::straight);
@@ -240,26 +226,59 @@ int main(int argc, char *argv[])
             }
             VehicleBase::vehicleCount++;
         }
- /*
+        // northbound spawning
         if (random.getRandom() < prob_new_vehicle_northbound)
-        { // checks prob of northbound spawn
-            int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars,
-                                        random.getRandom()); // chooses car type
-            if (carType == 0)
-            { // suv
-                if (tempNorthbound.empty())
-                { // pushes to temp vector the correct size of an suv, first checks if temp is empty
-                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::north);
+        {
+            int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars, random.getRandom()); // chooses car type
+            int turnDirect = getTurnDirection(carType, proportion_right_turn_SUVs,
+                                              proportion_right_turn_trucks, proportion_right_turn_cars, random.getRandom());
+
+            if (carType == 0 && turnDirect == 0) // spawns SUV and turns right
+            {
+                if (tempEastbound.empty())
+                { // pushes to temp vector the correct size of an SUV, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::north, turnDirection::right);
                     tempNorthbound.push_back(v);
                     tempNorthbound.push_back(v);
                     tempNorthbound.push_back(v);
                 }
             }
-            else if (carType == 1)
+            else if (carType == 0 && turnDirect == 1) // spawns SUV and goes straight
             {
-                if (tempNorthbound.empty())
-                {
-                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::north);
+                if (tempEastbound.empty())
+                { // pushes to temp vector the correct size of an SUV, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::north, turnDirection::straight);
+                    tempNorthbound.push_back(v);
+                    tempNorthbound.push_back(v);
+                    tempNorthbound.push_back(v);
+                }
+            }
+
+            else if (carType == 1 && turnDirect == 0) // spawns car and turns right
+            {
+                if (tempEastbound.empty())
+                { // pushes to temp vector the correct size of a car, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::north, turnDirection::right);
+                    tempNorthbound.push_back(v);
+                    tempNorthbound.push_back(v);
+                }
+            }
+            else if (carType == 1 && turnDirect == 1) // spawns car and goes straight
+            {
+                if (tempEastbound.empty())
+                { // pushes to temp vector the correct size of a car, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::north, turnDirection::straight);
+                    tempNorthbound.push_back(v);
+                    tempNorthbound.push_back(v);
+                }
+            }
+            else if (carType == 2 && turnDirect == 0) // spawns car and goes straight
+            {
+                if (tempEastbound.empty())
+                { // pushes to temp vector the correct size of a car, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::north, turnDirection::right);
+                    tempNorthbound.push_back(v);
+                    tempNorthbound.push_back(v);
                     tempNorthbound.push_back(v);
                     tempNorthbound.push_back(v);
                 }
@@ -267,8 +286,8 @@ int main(int argc, char *argv[])
             else
             {
                 if (tempNorthbound.empty())
-                {
-                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::north);
+                { // pushes to temp vector the correct size of a truck, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::north, turnDirection::straight);
                     tempNorthbound.push_back(v);
                     tempNorthbound.push_back(v);
                     tempNorthbound.push_back(v);
@@ -277,34 +296,69 @@ int main(int argc, char *argv[])
             }
             VehicleBase::vehicleCount++;
         }
+
+        // southbound spawning
         if (random.getRandom() < prob_new_vehicle_southbound)
         { // checks prob of southbound spawn
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars,
                                         random.getRandom()); // chooses car type
-            if (carType == 0)
-            { // suv
+            int turnDirect = getTurnDirection(carType, proportion_right_turn_SUVs,
+                                              proportion_right_turn_trucks, proportion_right_turn_cars, random.getRandom());
+
+            if (carType == 0 && turnDirect == 0) // spawns SUV and turns right
+            {
                 if (tempSouthbound.empty())
                 { // pushes to temp vector the correct size of an suv, first checks if temp is empty
-                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::south);
+                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::south, turnDirection::right);
                     tempSouthbound.push_back(v);
                     tempSouthbound.push_back(v);
                     tempSouthbound.push_back(v);
                 }
             }
-            else if (carType == 1)
+            else if (carType == 0 && turnDirect == 1) // spawns SUV and goes straight
             {
                 if (tempSouthbound.empty())
-                {
-                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::south);
+                { // pushes to temp vector the correct size of an suv, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::south, turnDirection::straight);
+                    tempSouthbound.push_back(v);
                     tempSouthbound.push_back(v);
                     tempSouthbound.push_back(v);
                 }
             }
-            else
+            else if (carType == 1 && turnDirect == 0) // spawns car and turns right
+            {
+                if (tempSouthbound.empty())
+                { // pushes to temp vector the correct size of an car, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::south, turnDirection::right);
+                    tempSouthbound.push_back(v);
+                    tempSouthbound.push_back(v);
+                }
+            }
+            else if (carType == 1 && turnDirect == 1) // spawns car and goes straight
+            {
+                if (tempSouthbound.empty())
+                { // pushes to temp vector the correct size of an car, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::south, turnDirection::straight);
+                    tempSouthbound.push_back(v);
+                    tempSouthbound.push_back(v);
+                }
+            }
+            else if (carType == 2 && turnDirect == 0) // truck and turns right
             {
                 if (tempSouthbound.empty())
                 {
-                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::south);
+                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::south, turnDirection::right);
+                    tempSouthbound.push_back(v);
+                    tempSouthbound.push_back(v);
+                    tempSouthbound.push_back(v);
+                    tempSouthbound.push_back(v);
+                }
+            }
+            else // truck and goes straight
+            {
+                if (tempSouthbound.empty())
+                {
+                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::south, turnDirection::straight);
                     tempSouthbound.push_back(v);
                     tempSouthbound.push_back(v);
                     tempSouthbound.push_back(v);
@@ -315,23 +369,56 @@ int main(int argc, char *argv[])
         }
         if (random.getRandom() < prob_new_vehicle_westbound)
         {
-            int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars,
-                                        random.getRandom()); // chooses car type
-            if (carType == 0)
-            { // suv
-                if (tempWestbound.empty())
-                { // pushes to temp vector the correct size of an suv, first checks if temp is empty
-                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::west);
+            int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars, random.getRandom()); // chooses car type
+            int turnDirect = getTurnDirection(carType, proportion_right_turn_SUVs,
+                                              proportion_right_turn_trucks, proportion_right_turn_cars, random.getRandom());
+
+            if (carType == 0 && turnDirect == 0) // spawns SUV and turns right
+            {
+                if (tempEastbound.empty())
+                { // pushes to temp vector the correct size of an SUV, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::west, turnDirection::right);
                     tempWestbound.push_back(v);
                     tempWestbound.push_back(v);
                     tempWestbound.push_back(v);
                 }
             }
-            else if (carType == 1)
+            else if (carType == 0 && turnDirect == 1) // spawns SUV and goes straight
             {
-                if (tempWestbound.empty())
-                {
-                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::west);
+                if (tempEastbound.empty())
+                { // pushes to temp vector the correct size of an SUV, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::west, turnDirection::straight);
+                    tempWestbound.push_back(v);
+                    tempWestbound.push_back(v);
+                    tempWestbound.push_back(v);
+                }
+            }
+
+            else if (carType == 1 && turnDirect == 0) // spawns car and turns right
+            {
+                if (tempEastbound.empty())
+                { // pushes to temp vector the correct size of a car, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::west, turnDirection::right);
+                    tempWestbound.push_back(v);
+                    tempWestbound.push_back(v);
+                }
+            }
+            else if (carType == 1 && turnDirect == 1) // spawns car and goes straight
+            {
+                if (tempEastbound.empty())
+                { // pushes to temp vector the correct size of a car, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::west, turnDirection::straight);
+                    tempWestbound.push_back(v);
+                    tempWestbound.push_back(v);
+                }
+            }
+            else if (carType == 2 && turnDirect == 0) // spawns car and goes straight
+            {
+                if (tempEastbound.empty())
+                { // pushes to temp vector the correct size of a car, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::west, turnDirection::right);
+                    tempWestbound.push_back(v);
+                    tempWestbound.push_back(v);
                     tempWestbound.push_back(v);
                     tempWestbound.push_back(v);
                 }
@@ -339,8 +426,8 @@ int main(int argc, char *argv[])
             else
             {
                 if (tempWestbound.empty())
-                {
-                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::west);
+                { // pushes to temp vector the correct size of a truck, first checks if temp is empty
+                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::west, turnDirection::straight);
                     tempWestbound.push_back(v);
                     tempWestbound.push_back(v);
                     tempWestbound.push_back(v);
@@ -348,111 +435,136 @@ int main(int argc, char *argv[])
                 }
             }
             VehicleBase::vehicleCount++;
-        } // end of adding cars 
-        */
-
-        std::cin.get(dummy);
-        numClicks++;
-        light_ticksNS++; // checks conditions for NS, EW red, yellow, green
-        light_ticksEW++;
-        if (redNS && light_ticksNS >= NSredTicks)
-        {
-            redNS = false;
-            greenNS = true;
-            light_ticksNS = 0;
-        }
-        else if (greenNS && light_ticksNS >= green_north_south)
-        {
-            greenNS = false;
-            yellowNS = true;
-            light_ticksNS = 0;
-        }
-        else if (yellowNS && light_ticksNS >= yellow_north_south)
-        {
-            yellowNS = false;
-            redNS = true;
-            light_ticksNS = 0;
         }
 
-        if (redEW && light_ticksEW >= EWredTicks)
+    // end of adding cars
 
-        {
-            redEW = false;
-            greenEW = true;
-            light_ticksEW = 0;
-        }
+    std::cin.get(dummy);
+    numClicks++;
+    light_ticksNS++; // checks conditions for NS, EW red, yellow, green
+    light_ticksEW++;
+    if (redNS && light_ticksNS >= NSredTicks)
+    {
+        redNS = false;
+        greenNS = true;
+        light_ticksNS = 0;
+    }
+    else if (greenNS && light_ticksNS >= green_north_south)
+    {
+        greenNS = false;
+        yellowNS = true;
+        light_ticksNS = 0;
+    }
+    else if (yellowNS && light_ticksNS >= yellow_north_south)
+    {
+        yellowNS = false;
+        redNS = true;
+        light_ticksNS = 0;
+    }
 
-        else if (greenEW && light_ticksEW >= green_east_west)
-        {
-            greenEW = false;
-            yellowEW = true;
-            light_ticksEW = 0;
-        }
+    if (redEW && light_ticksEW >= EWredTicks)
 
-        else if (yellowEW && light_ticksEW >= yellow_east_west)
-        {
-            yellowEW = false;
-            redEW = true;
-            light_ticksEW = 0;
-        }
+    {
+        redEW = false;
+        greenEW = true;
+        light_ticksEW = 0;
+    }
 
-        if (!tempEastbound.empty())
-        {                                        // checks that temp is not empty
-            eastbound[0] = tempEastbound.back(); // sets to actual value
-            tempEastbound.pop_back();            // removes temp
-        }
-        if (!tempNorthbound.empty())
-        {                                          // checks that temp is not empty
-            northbound[0] = tempNorthbound.back(); // sets to actual value
-            tempNorthbound.pop_back();             // removes temp
-        }
-        if (!tempSouthbound.empty())
-        {                                          // checks that temp is not empty
-            southbound[0] = tempSouthbound.back(); // sets to actual value
-            tempSouthbound.pop_back();             // removes temp
-        }
-        if (!tempWestbound.empty())
-        {                                        // checks that temp is not empty
-            westbound[0] = tempWestbound.back(); // sets to actual value
-            tempWestbound.pop_back();            // removes temp
-        }
-        anim.setVehiclesNorthbound(northbound); // reconstructs intersection with appropriate numClicks
-        anim.setVehiclesWestbound(westbound);
-        anim.setVehiclesSouthbound(southbound);
-        anim.setVehiclesEastbound(eastbound);
+    else if (greenEW && light_ticksEW >= green_east_west)
+    {
+        greenEW = false;
+        yellowEW = true;
+        light_ticksEW = 0;
+    }
 
-        if (greenEW && redNS)
-        {
-            anim.setLightNorthSouth(LightColor::red);
-            anim.setLightEastWest(LightColor::green);
-        }
-        else if (yellowEW && redNS)
-        {
-            anim.setLightNorthSouth(LightColor::red);
-            anim.setLightEastWest(LightColor::yellow);
-        }
-        else if (greenNS && redEW)
-        {
-            anim.setLightNorthSouth(LightColor::green);
-            anim.setLightEastWest(LightColor::red);
-        }
-        else if (yellowNS && redEW)
-        {
-            anim.setLightNorthSouth(LightColor::yellow);
-            anim.setLightEastWest(LightColor::red);
-        }
+    else if (yellowEW && light_ticksEW >= yellow_east_west)
+    {
+        yellowEW = false;
+        redEW = true;
+        light_ticksEW = 0;
+    }
 
-        else if (greenNS && yellowEW)
-        {
-            anim.setLightNorthSouth(LightColor::green);
-            anim.setLightEastWest(LightColor::yellow);
-        }
-        else if (yellowNS && greenEW)
-        {
-            anim.setLightNorthSouth(LightColor::yellow);
-            anim.setLightEastWest(LightColor::green);
-        }
+    if (!tempEastbound.empty())
+    {                                        // checks that temp is not empty
+        eastbound[0] = tempEastbound.back(); // sets to actual value
+        tempEastbound.pop_back();            // removes temp
+    }
+    if (!tempNorthbound.empty())
+    {                                          // checks that temp is not empty
+        northbound[0] = tempNorthbound.back(); // sets to actual value
+        tempNorthbound.pop_back();             // removes temp
+    }
+    if (!tempSouthbound.empty())
+    {                                          // checks that temp is not empty
+        southbound[0] = tempSouthbound.back(); // sets to actual value
+        tempSouthbound.pop_back();             // removes temp
+    }
+    if (!tempWestbound.empty())
+    {                                        // checks that temp is not empty
+        westbound[0] = tempWestbound.back(); // sets to actual value
+        tempWestbound.pop_back();            // removes temp
+    }
 
-        anim.draw(numClicks);
+    if ((dynamic_cast<VehicleBase *>(eastbound[halfsize + 1]) != nullptr) && ((eastbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
+    {
+        southbound[halfsize + 2] = std::move(eastbound[halfsize + 1]);
+        eastbound[halfsize + 1] = nullptr;
+    }
+    if ((dynamic_cast<VehicleBase *>(westbound[halfsize + 1]) != nullptr) && ((westbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
+    {
+        northbound[halfsize + 2] = std::move(westbound[halfsize + 1]);
+        westbound[halfsize + 1] = nullptr;
+    }
+    if ((dynamic_cast<VehicleBase *>(northbound[halfsize + 1]) != nullptr) && ((northbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
+    {
+        eastbound[halfsize + 2] = std::move(northbound[halfsize + 1]);
+        northbound[halfsize + 1] = nullptr;
+    }
+    if ((dynamic_cast<VehicleBase *>(southbound[halfsize + 1]) != nullptr) && ((southbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
+    {
+        westbound[halfsize + 2] = std::move(southbound[halfsize + 1]);
+        southbound[halfsize + 1] = nullptr;
+    }
+
+    anim.setVehiclesNorthbound(northbound); // reconstructs intersection with appropriate numClicks
+    anim.setVehiclesWestbound(westbound);
+    anim.setVehiclesSouthbound(southbound);
+    anim.setVehiclesEastbound(eastbound);
+
+    if (greenEW && redNS)
+    {
+        anim.setLightNorthSouth(LightColor::red);
+        anim.setLightEastWest(LightColor::green);
+    }
+    else if (yellowEW && redNS)
+    {
+        anim.setLightNorthSouth(LightColor::red);
+        anim.setLightEastWest(LightColor::yellow);
+    }
+    else if (greenNS && redEW)
+    {
+        anim.setLightNorthSouth(LightColor::green);
+        anim.setLightEastWest(LightColor::red);
+    }
+    else if (yellowNS && redEW)
+    {
+        anim.setLightNorthSouth(LightColor::yellow);
+        anim.setLightEastWest(LightColor::red);
+    }
+
+    else if (greenNS && yellowEW)
+    {
+        anim.setLightNorthSouth(LightColor::green);
+        anim.setLightEastWest(LightColor::yellow);
+    }
+    else if (yellowNS && greenEW)
+    {
+        anim.setLightNorthSouth(LightColor::yellow);
+        anim.setLightEastWest(LightColor::green);
+    }
+    anim.draw(numClicks);
     }
 }
+
+
+
