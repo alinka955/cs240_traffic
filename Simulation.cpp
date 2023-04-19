@@ -4,8 +4,6 @@
 #include "RandomClass.h"
 #include <vector>
 #include <map>
-#include <sstream>
-#include <fstream>
 #include "readinput.h"
 #include <string>
 
@@ -71,26 +69,6 @@ int assignVehicle(double proportion_of_SUVs, double proportion_of_cars, double r
     }
 }
 
-void moveCars(std::vector<VehicleBase *> &vehicles, int size, int midpoint, bool checkGo,
-              bool checkSlow, bool checkStop)
-{
-    if (size > 1)
-    {
-
-        for (int i = size - 1; i > 0; i--)
-        {
-            if ((checkGo == true && vehicles[midpoint] != nullptr) || (checkSlow == true && vehicles[midpoint - 1] != nullptr && vehicles[midpoint - 1] != vehicles[midpoint - 2]) ||
-                (checkStop == true && i < midpoint))
-            {
-
-                vehicles[i] = vehicles[i - 1];
-            }
-            // vehicles[i] = vehicles[i - 1];
-        }
-    }
-    vehicles[0] = nullptr;
-}
-
 int main(int argc, char *argv[])
 {
     ReadInput readinput;
@@ -143,7 +121,7 @@ int main(int argc, char *argv[])
     anim.setLightNorthSouth(LightColor::red);
     anim.setLightEastWest(LightColor::green);
     anim.draw(numClicks);
-    RandomClass random(std::stoi(argv[2]));
+    RandomClass random(std::stoi(argv[2])); //reads random seed for arg 2
     int NSredTicks = green_east_west + yellow_east_west;
     int EWredTicks = green_north_south + yellow_north_south;
     bool greenEW = true;  // bool values for if its green, yellow, red
@@ -155,13 +133,62 @@ int main(int argc, char *argv[])
 
     size_t light_ticksEW = 0;
     size_t light_ticksNS = 0; // tracks light switches
+
+    //start of while loop for each iteration
     while (numClicks < maximum_simulated_time)
     {
         double randNum = random.getRandom();
-        moveCars(eastbound, eastbound.size(), halfsize, greenEW, yellowEW, redEW);
-        moveCars(westbound, westbound.size(), halfsize, greenEW, yellowEW, redEW);
-        moveCars(northbound, northbound.size(), halfsize, greenNS, yellowNS, redEW);
-        moveCars(southbound, southbound.size(), halfsize, greenNS, yellowNS, redEW);
+
+        
+        for (int i = halfsize * 2 + 2; i > halfsize; i--) // moves all eastbound after intersection
+        {
+            eastbound[i] = eastbound[i - 1];
+        }
+        eastbound[halfsize] = nullptr;
+    
+
+        //moves car into intersection
+        if (NSredTicks - light_ticksEW > 2 && eastbound[halfsize - 1] != nullptr
+                                            && ((yellowEW) || greenEW))
+        {
+            cout << "halfsize: " << halfsize << endl;
+            int backOfCar = halfsize - 1;
+
+            // checks to find the back of car/truck/suv
+            while (halfsize - 4 < backOfCar)
+            { 
+                if ((eastbound[backOfCar - 1] != nullptr) && (eastbound[backOfCar] != nullptr) &&
+                    (eastbound[backOfCar]->getVehicleID() != eastbound[backOfCar - 1]->getVehicleID()))
+                {
+                    cout << "stopped" << endl;
+                    break;
+                }
+                else if (eastbound[backOfCar - 1] == nullptr || eastbound[backOfCar] == nullptr)
+                {
+                    cout << "null" << endl;
+                    break;
+                }
+                backOfCar--;
+                cout << "current backOfCar: " << backOfCar << endl;
+            }
+            cout << backOfCar << endl;
+            eastbound[halfsize] = eastbound[halfsize - 1];
+            eastbound[halfsize - 1] = nullptr;
+            
+        }
+
+        // moves all eastbound up to halfsize
+        if ((redEW && (eastbound[halfsize - 1] == nullptr)) || greenEW || yellowEW){
+            for (int i = halfsize - 1; i > 0; i--) 
+            {
+                eastbound[i] = eastbound[i - 1];
+            }
+            eastbound[0] = nullptr;
+        }
+
+
+
+
         if (random.getRandom() < prob_new_vehicle_eastbound) // checks prob of eastbound spawn
         {
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars,
@@ -233,6 +260,7 @@ int main(int argc, char *argv[])
             }
             VehicleBase::vehicleCount++;
         }
+        /*
         // northbound spawning
         if (random.getRandom() < prob_new_vehicle_northbound)
         {
@@ -443,7 +471,7 @@ int main(int argc, char *argv[])
             }
             VehicleBase::vehicleCount++;
         }
-
+        */
         // end of adding cars
 
         std::cin.get(dummy);
@@ -460,7 +488,7 @@ int main(int argc, char *argv[])
         {
             greenNS = false;
             yellowNS = true;
-            light_ticksNS = 0;
+            //light_ticksNS = 0;
         }
         else if (yellowNS && light_ticksNS >= yellow_north_south)
         {
@@ -481,7 +509,7 @@ int main(int argc, char *argv[])
         {
             greenEW = false;
             yellowEW = true;
-            light_ticksEW = 0;
+            //light_ticksEW = 0;
         }
 
         else if (yellowEW && light_ticksEW >= yellow_east_west)
@@ -512,22 +540,22 @@ int main(int argc, char *argv[])
             tempWestbound.pop_back();            // removes temp
         }
 
-        if ((dynamic_cast<VehicleBase *>(eastbound[halfsize + 1]) != nullptr) && ((eastbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
+        if ((eastbound[halfsize + 1] != nullptr) && (eastbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right)
         {
             southbound[halfsize + 2] = std::move(eastbound[halfsize + 1]);
             eastbound[halfsize + 1] = nullptr;
         }
-        if ((dynamic_cast<VehicleBase *>(westbound[halfsize + 1]) != nullptr) && ((westbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
+        if ((westbound[halfsize + 1] != nullptr) && (westbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right)
         {
             northbound[halfsize + 2] = std::move(westbound[halfsize + 1]);
             westbound[halfsize + 1] = nullptr;
         }
-        if ((dynamic_cast<VehicleBase *>(northbound[halfsize + 1]) != nullptr) && ((northbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
+        if ((northbound[halfsize + 1] != nullptr) && (northbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right)
         {
             eastbound[halfsize + 2] = std::move(northbound[halfsize + 1]);
             northbound[halfsize + 1] = nullptr;
         }
-        if ((dynamic_cast<VehicleBase *>(southbound[halfsize + 1]) != nullptr) && ((southbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right))
+        if ((southbound[halfsize + 1] != nullptr) && (southbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right)
         {
             westbound[halfsize + 2] = std::move(southbound[halfsize + 1]);
             southbound[halfsize + 1] = nullptr;
