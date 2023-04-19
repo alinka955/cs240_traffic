@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
                     cout << "stopped" << endl;
                     break;
                 }
-                else if (eastbound[backOfCar - 1] == nullptr || eastbound[backOfCar] == nullptr)
+                else if (eastbound[backOfCar] == nullptr || eastbound[backOfCar] == nullptr)
                 {
                     cout << "null" << endl;
                     break;
@@ -171,19 +171,25 @@ int main(int argc, char *argv[])
                 backOfCar--;
                 cout << "current backOfCar: " << backOfCar << endl;
             }
-            cout << backOfCar << endl;
-            eastbound[halfsize] = eastbound[halfsize - 1];
-            eastbound[halfsize - 1] = nullptr;
+            backOfCar++;
+
+	    if((halfsize - 1) - backOfCar + 3 <= (NSredTicks - light_ticksEW)){
+            	eastbound[halfsize] = eastbound[halfsize - 1];
+            	eastbound[halfsize - 1] = nullptr;
+                //cout << 'AHHH' << endl;
+		}
             
         }
 
         // moves all eastbound up to halfsize
-        if ((redEW && (eastbound[halfsize - 1] == nullptr)) || greenEW || yellowEW){
-            for (int i = halfsize - 1; i > 0; i--) 
+        
+        for (int i = halfsize - 1; i > 0; i--) 
+            {
+            if ((redEW && (eastbound[i] == nullptr)) || greenEW || yellowEW)
             {
                 eastbound[i] = eastbound[i - 1];
+                eastbound[i - 1] = nullptr;
             }
-            eastbound[0] = nullptr;
         }
 
 
