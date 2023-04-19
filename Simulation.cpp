@@ -192,8 +192,161 @@ int main(int argc, char *argv[])
             }
         }
 
+        for (int i = halfsize * 2 + 2; i > halfsize; i--) // moves all northbound after intersection
+        {
+            northbound[i] = northbound[i - 1];
+        }
+        northbound[halfsize] = nullptr;
+    
 
+        //moves car into intersection
+        if (EWredTicks - light_ticksNS > 2 && northbound[halfsize - 1] != nullptr
+                                            && ((yellowNS) || greenNS))
+        {
+            cout << "halfsize: " << halfsize << endl;
+            int backOfCar = halfsize - 1;
 
+            // checks to find the back of car/truck/suv
+            while (halfsize - 4 < backOfCar)
+            { 
+                if ((northbound[backOfCar - 1] != nullptr) && (northbound[backOfCar] != nullptr) &&
+                    (northbound[backOfCar]->getVehicleID() != northbound[backOfCar - 1]->getVehicleID()))
+                {
+                    cout << "stopped" << endl;
+                    break;
+                }
+                else if (northbound[backOfCar] == nullptr || northbound[backOfCar] == nullptr)
+                {
+                    cout << "null" << endl;
+                    break;
+                }
+                backOfCar--;
+                cout << "current backOfCar: " << backOfCar << endl;
+            }
+            backOfCar++;
+
+	    if(((halfsize - 1) - backOfCar + 3) <= (EWredTicks - light_ticksNS)){
+            	northbound[halfsize] = northbound[halfsize - 1];
+            	northbound[halfsize - 1] = nullptr;
+                //cout << 'AHHH' << endl;
+		}
+            
+        }
+
+        // moves all northbound up to halfsize
+        
+        for (int i = halfsize - 1; i > 0; i--) 
+            {
+            if ((redNS && (northbound[i] == nullptr)) || greenNS)
+            {
+                northbound[i] = northbound[i - 1];
+                northbound[i - 1] = nullptr;
+            }
+        }
+
+        for (int i = halfsize * 2 + 2; i > halfsize; i--) // moves all southbound after intersection
+        {
+            southbound[i] = southbound[i - 1];
+        }
+        southbound[halfsize] = nullptr;
+    
+
+        //moves car into intersection
+        if (EWredTicks - light_ticksNS > 2 && southbound[halfsize - 1] != nullptr
+                                            && ((yellowNS) || greenNS))
+        {
+            cout << "halfsize: " << halfsize << endl;
+            int backOfCar = halfsize - 1;
+
+            // checks to find the back of car/truck/suv
+            while (halfsize - 4 < backOfCar)
+            { 
+                if ((southbound[backOfCar - 1] != nullptr) && (southbound[backOfCar] != nullptr) &&
+                    (southbound[backOfCar]->getVehicleID() != southbound[backOfCar - 1]->getVehicleID()))
+                {
+                    cout << "stopped" << endl;
+                    break;
+                }
+                else if (southbound[backOfCar] == nullptr || southbound[backOfCar] == nullptr)
+                {
+                    cout << "null" << endl;
+                    break;
+                }
+                backOfCar--;
+                cout << "current backOfCar: " << backOfCar << endl;
+            }
+            backOfCar++;
+
+	    if(((halfsize - 1) - backOfCar + 3) <= (EWredTicks - light_ticksNS)){
+            	southbound[halfsize] = southbound[halfsize - 1];
+            	southbound[halfsize - 1] = nullptr;
+                //cout << 'AHHH' << endl;
+		}
+            
+        }
+
+        // moves all southbound up to halfsize
+        
+        for (int i = halfsize - 1; i > 0; i--) 
+            {
+            if ((redNS && (southbound[i] == nullptr)) || greenNS)
+            {
+                southbound[i] = southbound[i - 1];
+                southbound[i - 1] = nullptr;
+            }
+        }
+
+        for (int i = halfsize * 2 + 2; i > halfsize; i--) // moves all westbound after intersection
+        {
+            westbound[i] = westbound[i - 1];
+        }
+        westbound[halfsize] = nullptr;
+    
+
+        //moves car into intersection
+        if (NSredTicks - light_ticksEW > 2 && northbound[halfsize - 1] != nullptr
+                                            && ((yellowEW) || greenEW))
+        {
+            cout << "halfsize: " << halfsize << endl;
+            int backOfCar = halfsize - 1;
+
+            // checks to find the back of car/truck/suv
+            while (halfsize - 4 < backOfCar)
+            { 
+                if ((westbound[backOfCar - 1] != nullptr) && (westbound[backOfCar] != nullptr) &&
+                    (westbound[backOfCar]->getVehicleID() != westbound[backOfCar - 1]->getVehicleID()))
+                {
+                    cout << "stopped" << endl;
+                    break;
+                }
+                else if (westbound[backOfCar] == nullptr || westbound[backOfCar] == nullptr)
+                {
+                    cout << "null" << endl;
+                    break;
+                }
+                backOfCar--;
+                cout << "current backOfCar: " << backOfCar << endl;
+            }
+            backOfCar++;
+
+	    if(((halfsize - 1) - backOfCar + 3) <= (NSredTicks - light_ticksEW)){
+            	westbound[halfsize] = westbound[halfsize - 1];
+            	westbound[halfsize - 1] = nullptr;
+                //cout << 'AHHH' << endl;
+		}
+            
+        }
+
+        // moves all westbound up to halfsize
+        
+        for (int i = halfsize - 1; i > 0; i--) 
+            {
+            if ((redEW && (westbound[i] == nullptr)) || greenEW)
+            {
+                westbound[i] = westbound[i - 1];
+                westbound[i - 1] = nullptr;
+            }
+        }
 
         if (random.getRandom() < prob_new_vehicle_eastbound) // checks prob of eastbound spawn
         {
@@ -261,7 +414,7 @@ int main(int argc, char *argv[])
             VehicleBase::vehicleCount++;
             }
         }
-        /*
+        
         // northbound spawning
         if (random.getRandom() < prob_new_vehicle_northbound)
         {
@@ -271,7 +424,7 @@ int main(int argc, char *argv[])
 
             if (carType == 0 && turnDirect == 0) // spawns SUV and turns right
             {
-                if (tempEastbound.empty())
+                if (tempNorthbound.empty())
                 { // pushes to temp vector the correct size of an SUV, first checks if temp is empty
                     VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::north, turnDirection::right);
                     tempNorthbound.push_back(v);
@@ -281,7 +434,7 @@ int main(int argc, char *argv[])
             }
             else if (carType == 0 && turnDirect == 1) // spawns SUV and goes straight
             {
-                if (tempEastbound.empty())
+                if (tempNorthbound.empty())
                 { // pushes to temp vector the correct size of an SUV, first checks if temp is empty
                     VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::north, turnDirection::straight);
                     tempNorthbound.push_back(v);
@@ -292,7 +445,7 @@ int main(int argc, char *argv[])
 
             else if (carType == 1 && turnDirect == 0) // spawns car and turns right
             {
-                if (tempEastbound.empty())
+                if (tempNorthbound.empty())
                 { // pushes to temp vector the correct size of a car, first checks if temp is empty
                     VehicleBase *v = new VehicleBase(VehicleType::car, Direction::north, turnDirection::right);
                     tempNorthbound.push_back(v);
@@ -472,7 +625,7 @@ int main(int argc, char *argv[])
             }
             VehicleBase::vehicleCount++;
         }
-        */
+        
         // end of adding cars
 
         std::cin.get(dummy);
@@ -525,17 +678,17 @@ int main(int argc, char *argv[])
             eastbound[0] = tempEastbound.back(); // sets to actual value
             tempEastbound.pop_back();            // removes temp
         }
-        if (!tempNorthbound.empty())
+        if (!tempNorthbound.empty() && northbound[0] == nullptr)
         {                                          // checks that temp is not empty
             northbound[0] = tempNorthbound.back(); // sets to actual value
             tempNorthbound.pop_back();             // removes temp
         }
-        if (!tempSouthbound.empty())
+        if (!tempSouthbound.empty() && southbound[0] == nullptr)
         {                                          // checks that temp is not empty
             southbound[0] = tempSouthbound.back(); // sets to actual value
             tempSouthbound.pop_back();             // removes temp
         }
-        if (!tempWestbound.empty())
+        if (!tempWestbound.empty() && westbound[0] == nullptr)
         {                                        // checks that temp is not empty
             westbound[0] = tempWestbound.back(); // sets to actual value
             tempWestbound.pop_back();            // removes temp
