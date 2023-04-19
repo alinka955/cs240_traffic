@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
             }
             backOfCar++;
 
-	    if((halfsize - 1) - backOfCar + 3 <= (NSredTicks - light_ticksEW)){
+	    if(((halfsize - 1) - backOfCar + 3) <= (NSredTicks - light_ticksEW)){
             	eastbound[halfsize] = eastbound[halfsize - 1];
             	eastbound[halfsize - 1] = nullptr;
                 //cout << 'AHHH' << endl;
@@ -185,7 +185,7 @@ int main(int argc, char *argv[])
         
         for (int i = halfsize - 1; i > 0; i--) 
             {
-            if ((redEW && (eastbound[i] == nullptr)) || greenEW || yellowEW)
+            if ((redEW && (eastbound[i] == nullptr)) || greenEW)
             {
                 eastbound[i] = eastbound[i - 1];
                 eastbound[i - 1] = nullptr;
@@ -202,69 +202,64 @@ int main(int argc, char *argv[])
 
             int turnDirect = getTurnDirection(carType, proportion_right_turn_SUVs, proportion_right_turn_trucks, proportion_right_turn_cars, random.getRandom());
 
-            if (carType == 0 && turnDirect == 0) // spawns SUV and turns right
-            {                                    // suv
-                if (tempEastbound.empty())
-                { // pushes to temp vector the correct size of an suv, first checks if temp is empty
+            if (tempEastbound.empty()){
+                if (carType == 0 && turnDirect == 0) // spawns SUV and turns right
+                {                                    // suv
+
+                    // pushes to temp vector the correct size of an suv, first checks if temp is empty
                     VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::east, turnDirection::right);
                     tempEastbound.push_back(v);
                     tempEastbound.push_back(v);
                     tempEastbound.push_back(v);
-                }
+                
             }
 
             if (carType == 0 && turnDirect == 1) // spawns SUV and goes straight
             {                                    // suv
-                if (tempEastbound.empty())
-                { // pushes to temp vector the correct size of an suv, first checks if temp is empty
+               
+                 // pushes to temp vector the correct size of an suv, first checks if temp is empty
                     VehicleBase *v = new VehicleBase(VehicleType::suv, Direction::east, turnDirection::straight);
                     tempEastbound.push_back(v);
                     tempEastbound.push_back(v);
                     tempEastbound.push_back(v);
-                }
+                
             }
             if (carType == 1 && turnDirect == 0) // spawns car and goes right
             {                                    // suv
-                if (tempEastbound.empty())
-                { // pushes to temp vector the correct size of an suv, first checks if temp is empty
-                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::east, turnDirection::right);
-                    tempEastbound.push_back(v);
-                    tempEastbound.push_back(v);
-                }
+                // pushes to temp vector the correct size of an suv, first checks if temp is empty
+                VehicleBase *v = new VehicleBase(VehicleType::car, Direction::east, turnDirection::right);
+                tempEastbound.push_back(v);
+                tempEastbound.push_back(v);
             }
 
             else if (carType == 1 && turnDirect == 1) // spawns car and goes straight
             {
-                if (tempEastbound.empty())
-                {
-                    VehicleBase *v = new VehicleBase(VehicleType::car, Direction::east, turnDirection::straight);
-                    tempEastbound.push_back(v);
-                    tempEastbound.push_back(v);
-                }
+                VehicleBase *v = new VehicleBase(VehicleType::car, Direction::east, turnDirection::straight);
+                tempEastbound.push_back(v);
+                tempEastbound.push_back(v);
+                
             }
             else if (carType == 2 && turnDirect == 0) // truck and right
             {
-                if (tempEastbound.empty())
-                {
-                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::east, turnDirection::right);
-                    tempEastbound.push_back(v);
-                    tempEastbound.push_back(v);
-                    tempEastbound.push_back(v);
-                    tempEastbound.push_back(v);
-                }
+                
+                VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::east, turnDirection::right);
+                tempEastbound.push_back(v);
+                tempEastbound.push_back(v);
+                tempEastbound.push_back(v);
+                tempEastbound.push_back(v);
+            
             }
             else
             { // truck and straight
-                if (tempEastbound.empty())
-                {
-                    VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::east, turnDirection::straight);
-                    tempEastbound.push_back(v);
-                    tempEastbound.push_back(v);
-                    tempEastbound.push_back(v);
-                    tempEastbound.push_back(v);
-                }
+                VehicleBase *v = new VehicleBase(VehicleType::truck, Direction::east, turnDirection::straight);
+                tempEastbound.push_back(v);
+                tempEastbound.push_back(v);
+                tempEastbound.push_back(v);
+                tempEastbound.push_back(v);
+                
             }
             VehicleBase::vehicleCount++;
+            }
         }
         /*
         // northbound spawning
@@ -525,7 +520,7 @@ int main(int argc, char *argv[])
             light_ticksEW = 0;
         }
 
-        if (!tempEastbound.empty())
+        if (!tempEastbound.empty() && eastbound[0] == nullptr)
         {                                        // checks that temp is not empty
             eastbound[0] = tempEastbound.back(); // sets to actual value
             tempEastbound.pop_back();            // removes temp
