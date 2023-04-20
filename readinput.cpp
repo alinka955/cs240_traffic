@@ -8,6 +8,12 @@
 using namespace std;
 
 
+/**
+* This program is intended to read a given input file and create a dictionary
+* of keys and values associated with the input file.
+* @author Alina Enikeeva
+*/
+
 ReadInput::ReadInput(){};
 
 
