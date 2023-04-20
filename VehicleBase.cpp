@@ -5,7 +5,11 @@
 using namespace std;
 int VehicleBase::vehicleCount = 0;
 
-
+/**
+* This program is a modified VehicleBase class that has been updated to include 
+* copy and move constructors, copy and move assignments, deconstructors, and turn directions 
+* for the vehicle. 
+*/
 //intializes
 VehicleBase::VehicleBase(VehicleType type, Direction direction, turnDirection turndirection)
     : vehicleID(VehicleBase::vehicleCount++), 
@@ -59,14 +63,6 @@ VehicleBase& VehicleBase::operator=(VehicleBase&& other)noexcept{
     other.vehicleID = 0;
     return *this;
 }
-/*
-int main (){
-	VehicleBase v1(VehicleType::car, Direction::east, turnDirection::right);
-	VehicleBase v2(v1);
-	
-	std::cout << &v1 << std::endl;
-	std::cout << &v2 << std::endl;	
-}
-*/
+
 
 #endif
