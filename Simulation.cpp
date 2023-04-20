@@ -79,6 +79,7 @@ int main(int argc, char *argv[])
     int halfsize = inputDict["number_of_sections_before_intersection:"];
     int maximum_simulated_time = inputDict["maximum_simulated_time:"];
 
+
     int green_east_west = inputDict["green_east_west:"];
     int green_north_south = inputDict["green_north_south:"];
 
@@ -132,13 +133,17 @@ int main(int argc, char *argv[])
     bool redEW = false;
     bool redNS = true;
 
+
     int light_ticksEW = 0;
     int light_ticksNS = 0; // tracks light switches
+
 
     // start of while loop for each iteration
     while (numClicks < maximum_simulated_time)
     {
+
         //double randNum = random.getRandom();
+
 
         for (int i = halfsize * 2 + 2; i > halfsize; i--) // moves all eastbound after intersection
         {
