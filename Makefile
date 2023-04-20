@@ -1,31 +1,32 @@
 CC = g++
 LD = $(CC)
 INCDIR = -I../
-CCFLAGS =  -std=c++17 $(INCDIR) -g -c
-LDFLAGS =  -std=c++17 -g
-OBJS = simulation.o readinput.o VehicleBase.o Animator.o RandomClass.o
+CCFLAGS = -Wall -std=c++17 $(INCDIR) -g -c
+LDFLAGS = -Wall -std=c++17 -g
+OBJS = Simulation.o readinput.o VehicleBase.o Animator.o RandomClass.o
 EXEC = simulation
 
-simulation.o: Simulation.cpp Animator.h VehicleBase.h RandomClass.h readinput.h
-	$(CC) $(CCFLAGS) Simulation.cpp
+simulation: $(OBJS)
+        $(LD) $(LDFLAGS) $(OBJS) -o $@
+
+Simulation.o: Simulation.cpp Animator.h VehicleBase.h RandomClass.h readinput.h
+        $(CC) $(CCFLAGS) Simulation.cpp
 
 readinput.o: readinput.cpp readinput.h
-	$(CC) $(CCFLAGS) readinput.cpp
+        $(CC) $(CCFLAGS) readinput.cpp
 
 VehicleBase.o: VehicleBase.cpp VehicleBase.h
-	$(CC) $(CCFLAGS) VehicleBase.cpp
+        $(CC) $(CCFLAGS) VehicleBase.cpp
 
 Animator.o: Animator.cpp Animator.h
-	$(CC) $(CCFLAGS) Animator.cpp
+        $(CC) $(CCFLAGS) Animator.cpp
 
 RandomClass.o: RandomClass.cpp RandomClass.h
-	$(CC) $(CCFLAGS) RandomClass.cpp
+        $(CC) $(CCFLAGS) RandomClass.cpp
 
-$(EXEC): $(OBJS)
-	$(LD) $(LDFLAGS) $(OBJS) -o $(EXEC)
-
-all: $(EXEC)
+all: simulation
 
 .PHONY: clean
 clean:
-	rm -f $(OBJS) $(EXEC)
+        rm -f $(OBJS) $(EXEC)
+
