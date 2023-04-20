@@ -207,7 +207,7 @@ int main(int argc, char *argv[])
                 backOfCar--;
             }
 
-            if ((halfsize - 1 - backOfCar + 2) <= (GYticksNS - light_ticksNS))  
+            if ((halfsize - 1 - backOfCar + 3) <= (GYticksNS - light_ticksNS))  
             {
                 northbound[halfsize] = northbound[halfsize - 1];
                 northbound[halfsize - 1] = nullptr;
@@ -298,7 +298,7 @@ int main(int argc, char *argv[])
                 backOfCar--;
             }
 
-            if ((halfsize - 1 - backOfCar + 2) <= (GYticksEW - light_ticksEW))
+            if ((halfsize - 1 - backOfCar + 3) <= (GYticksEW - light_ticksEW))
             {
                 westbound[halfsize] = westbound[halfsize - 1];
                 westbound[halfsize - 1] = nullptr;
