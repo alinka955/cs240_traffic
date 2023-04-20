@@ -2,10 +2,11 @@
 #include "Animator.h"
 #include "VehicleBase.h"
 #include "RandomClass.h"
-#include <vector>
-#include <map>
 #include "readinput.h"
 #include <string>
+#include <stdexcept>
+#include <vector>
+#include <map>
 
 // decides what direction the car will be going (0 for right or 1 for straight)
 int getTurnDirection(int carType, double proportion_right_turn_SUVs, double proportion_right_turn_trucks, double proportion_right_turn_cars, double randNum)
@@ -15,12 +16,10 @@ int getTurnDirection(int carType, double proportion_right_turn_SUVs, double prop
     { // if suv, car or straight
         if (randNum < proportion_right_turn_SUVs)
         {
-            // cout << "right: suv" << endl;
             return 0;
         }
         else
         {
-            // cout << "straight: suv" << endl;
             return 1;
         }
     }
@@ -28,12 +27,10 @@ int getTurnDirection(int carType, double proportion_right_turn_SUVs, double prop
     { // if car, right or straight
         if (randNum < proportion_right_turn_cars)
         {
-            // cout << "right: car" << endl;
             return 0;
         }
         else
         {
-            // cout << "straight: car" << endl;
             return 1;
         }
     }
@@ -41,12 +38,10 @@ int getTurnDirection(int carType, double proportion_right_turn_SUVs, double prop
     { // if truck, assign right or straight
         if (randNum < proportion_right_turn_trucks)
         {
-            // cout << "right: truck" << endl;
             return 0;
         }
         else
         {
-            // cout << "straight: truck" << endl;
             return 1;
         }
     }
@@ -56,11 +51,11 @@ int getTurnDirection(int carType, double proportion_right_turn_SUVs, double prop
 // decides if a vehicle is an suv, car, or truck
 int assignVehicle(double proportion_of_SUVs, double proportion_of_cars, double randNum)
 {
-    if (randNum < proportion_of_SUVs)
+    if (randNum <= proportion_of_SUVs)
     { // suv is 0
         return 0;
     }
-    else if (proportion_of_SUVs < randNum && (randNum < (proportion_of_SUVs + proportion_of_cars)))
+    else if (proportion_of_SUVs <= randNum && (randNum <= (proportion_of_SUVs + proportion_of_cars)))
     { // car is 1
         return 1;
     }
@@ -96,6 +91,12 @@ int main(int argc, char *argv[])
 
     int yellow_east_west = inputDict["yellow_east_west:"];
     int yellow_north_south = inputDict["yellow_north_south:"];
+
+    if (halfsize < 5)
+    {
+        throw std::invalid_argument("halfsize is too small to run the program, please input with a halfsize greater than 4");
+        return 0;
+    }
 
     Animator anim(halfsize);
 
@@ -142,7 +143,7 @@ int main(int argc, char *argv[])
         eastbound[halfsize] = nullptr;
 
         // moves car into intersection eastbound
-        if (GYticksEW - light_ticksEW > 3 && eastbound[halfsize - 1] != nullptr && (yellowEW || greenEW))
+        if (GYticksEW - light_ticksEW > 2 && eastbound[halfsize - 1] != nullptr && (yellowEW || greenEW))
         {
             int backOfCar = halfsize - 1;
 
@@ -161,7 +162,7 @@ int main(int argc, char *argv[])
                 backOfCar--;
             }
 
-            if ((halfsize - 1 - backOfCar + 3) < (GYticksEW - light_ticksEW))
+            if ((halfsize - 1 - backOfCar + 3) <= (GYticksEW - light_ticksEW))
             {
                 eastbound[halfsize] = eastbound[halfsize - 1];
                 eastbound[halfsize - 1] = nullptr;
@@ -187,7 +188,7 @@ int main(int argc, char *argv[])
         northbound[halfsize] = nullptr;
 
         // moves car into intersection
-        if ((GYticksNS - light_ticksNS > 3) && (northbound[halfsize - 1] != nullptr) && (yellowNS || greenNS))
+        if ((GYticksNS - light_ticksNS > 2) && (northbound[halfsize - 1] != nullptr) && (yellowNS || greenNS))
         {
             int backOfCar = halfsize - 1;
 
@@ -206,7 +207,7 @@ int main(int argc, char *argv[])
                 backOfCar--;
             }
 
-            if ((halfsize - 1 - backOfCar + 3) < (GYticksNS - light_ticksNS))  
+            if ((halfsize - 1 - backOfCar + 2) <= (GYticksNS - light_ticksNS))  
             {
                 northbound[halfsize] = northbound[halfsize - 1];
                 northbound[halfsize - 1] = nullptr;
@@ -225,14 +226,14 @@ int main(int argc, char *argv[])
         }
 
 
-        for (int i = halfsize * 2 + 2; i > halfsize; i--) // moves all southbound after intersection
+        for (int i = halfsize * 2 + 2; i >= halfsize; i--) // moves all southbound after intersection
         {
             southbound[i] = southbound[i - 1];
         }
         southbound[halfsize] = nullptr;
 
         // moves car into intersection
-        if (GYticksNS - light_ticksNS > 3 && southbound[halfsize - 1] != nullptr && (yellowNS || greenNS))
+        if (GYticksNS - light_ticksNS > 2 && southbound[halfsize - 1] != nullptr && (yellowNS || greenNS))
         {
             int backOfCar = halfsize - 1;
 
@@ -251,7 +252,7 @@ int main(int argc, char *argv[])
                 backOfCar--;
             }
 
-            if ((halfsize - 1 - backOfCar + 3) < (GYticksNS - light_ticksNS))
+            if ((halfsize - 1 - backOfCar + 3) <= (GYticksNS - light_ticksNS))
             {
                 southbound[halfsize] = southbound[halfsize - 1];
                 southbound[halfsize - 1] = nullptr;
@@ -270,7 +271,7 @@ int main(int argc, char *argv[])
         }
 
         // westbound
-        for (int i = halfsize * 2 + 2; i > halfsize; i--) // moves all westbound after intersection
+        for (int i = halfsize * 2 + 2; i >= halfsize; i--) // moves all westbound after intersection
         {
             westbound[i] = westbound[i - 1];
         }
@@ -297,7 +298,7 @@ int main(int argc, char *argv[])
                 backOfCar--;
             }
 
-            if ((halfsize - 1 - backOfCar + 3) < (GYticksEW - light_ticksEW))
+            if ((halfsize - 1 - backOfCar + 2) <= (GYticksEW - light_ticksEW))
             {
                 westbound[halfsize] = westbound[halfsize - 1];
                 westbound[halfsize - 1] = nullptr;
