@@ -135,14 +135,14 @@ int main(int argc, char *argv[])
     // start of while loop for each iteration
     while (numClicks < maximum_simulated_time)
     {
-        for (int i = halfsize * 2 + 2; i >= halfsize; i--) // moves all eastbound after intersection
+        for (int i = halfsize * 2 + 2; i >halfsize; i--) // moves all eastbound after intersection
         {
             eastbound[i] = eastbound[i - 1];
         }
         eastbound[halfsize] = nullptr;
 
         // moves car into intersection eastbound
-        if (GYticksEW - light_ticksEW > 2 && eastbound[halfsize - 1] != nullptr && (yellowEW || greenEW))
+        if (GYticksEW - light_ticksEW > 3 && eastbound[halfsize - 1] != nullptr && (yellowEW || greenEW))
         {
             int backOfCar = halfsize - 1;
 
@@ -187,12 +187,12 @@ int main(int argc, char *argv[])
         northbound[halfsize] = nullptr;
 
         // moves car into intersection
-        if ((GYticksNS - light_ticksNS > 2) && (northbound[halfsize - 1] != nullptr) && (yellowNS || greenNS))
+        if ((GYticksNS - light_ticksNS > 3) && (northbound[halfsize - 1] != nullptr) && (yellowNS || greenNS))
         {
             int backOfCar = halfsize - 1;
 
             // checks to find the back of car/truck/suv
-            while (halfsize - 1 > backOfCar)
+            while (halfsize - 1 >= backOfCar)
             {
                 if ((northbound[backOfCar - 1] != nullptr) && (northbound[backOfCar] != nullptr) &&
                     (northbound[backOfCar]->getVehicleID() != northbound[backOfCar - 1]->getVehicleID()))
@@ -206,7 +206,7 @@ int main(int argc, char *argv[])
                 backOfCar--;
             }
 
-            if ((halfsize - 1 - backOfCar + 3) < (GYticksNS - light_ticksNS))
+            if ((halfsize - 1 - backOfCar + 3) < (GYticksNS - light_ticksNS))  
             {
                 northbound[halfsize] = northbound[halfsize - 1];
                 northbound[halfsize - 1] = nullptr;
@@ -224,19 +224,20 @@ int main(int argc, char *argv[])
             }
         }
 
-        for (int i = halfsize * 2 + 2; i >= halfsize; i--) // moves all southbound after intersection
+
+        for (int i = halfsize * 2 + 2; i > halfsize; i--) // moves all southbound after intersection
         {
             southbound[i] = southbound[i - 1];
         }
         southbound[halfsize] = nullptr;
 
         // moves car into intersection
-        if (GYticksNS - light_ticksNS > 2 && southbound[halfsize - 1] != nullptr && (yellowNS || greenNS))
+        if (GYticksNS - light_ticksNS > 3 && southbound[halfsize - 1] != nullptr && (yellowNS || greenNS))
         {
             int backOfCar = halfsize - 1;
 
             // checks to find the back of car/truck/suv
-            while (halfsize - 1 > backOfCar)
+            while (halfsize - 1 >= backOfCar)
             {
                 if ((southbound[backOfCar - 1] != nullptr) && (southbound[backOfCar] != nullptr) &&
                     (southbound[backOfCar]->getVehicleID() != southbound[backOfCar - 1]->getVehicleID()))
@@ -269,7 +270,7 @@ int main(int argc, char *argv[])
         }
 
         // westbound
-        for (int i = halfsize * 2 + 2; i >= halfsize; i--) // moves all westbound after intersection
+        for (int i = halfsize * 2 + 2; i > halfsize; i--) // moves all westbound after intersection
         {
             westbound[i] = westbound[i - 1];
         }
@@ -282,7 +283,7 @@ int main(int argc, char *argv[])
             int backOfCar = halfsize - 1;
 
             // checks to find the back of car/truck/suv
-            while (halfsize - 1 > backOfCar)
+            while (halfsize - 1 >= backOfCar)
             {
                 if ((westbound[backOfCar - 1] != nullptr) && (westbound[backOfCar] != nullptr) &&
                     (westbound[backOfCar]->getVehicleID() != westbound[backOfCar - 1]->getVehicleID()))
@@ -571,8 +572,9 @@ int main(int argc, char *argv[])
 
         std::cin.get(dummy);
         numClicks++;
-        light_ticksNS++; // checks conditions for NS, EW red, yellow, green
+        light_ticksNS++;
         light_ticksEW++;
+        // checks conditions for NS, EW red, yellow, green
         if (redNS && light_ticksNS >= GYticksEW)
         {
             redNS = false;
@@ -584,7 +586,7 @@ int main(int argc, char *argv[])
             greenNS = false;
             yellowNS = true;
         }
-        else if (yellowNS && light_ticksNS >= yellow_north_south)
+        else if (yellowNS && light_ticksNS >= GYticksNS)
         {
             yellowNS = false;
             redNS = true;
@@ -605,7 +607,7 @@ int main(int argc, char *argv[])
             yellowEW = true;
         }
 
-        else if (yellowEW && light_ticksEW >= yellow_east_west)
+        else if (yellowEW && light_ticksEW >= GYticksEW)
         {
             yellowEW = false;
             redEW = true;
