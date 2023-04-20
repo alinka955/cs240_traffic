@@ -77,10 +77,11 @@ int main(int argc, char *argv[])
     std::map<std::string, double> inputDict = readinput.getDict(argv[1]);
     // find the values of each variable, read from input
     int halfsize = inputDict["number_of_sections_before_intersection:"];
-    size_t maximum_simulated_time = inputDict["maximum_simulated_time:"];
+    int maximum_simulated_time = inputDict["maximum_simulated_time:"];
 
-    size_t green_east_west = inputDict["green_east_west:"];
-    size_t green_north_south = inputDict["green_north_south:"];
+
+    int green_east_west = inputDict["green_east_west:"];
+    int green_north_south = inputDict["green_north_south:"];
 
     double prob_new_vehicle_eastbound = inputDict["prob_new_vehicle_eastbound:"];
     double prob_new_vehicle_northbound = inputDict["prob_new_vehicle_northbound:"];
@@ -94,12 +95,12 @@ int main(int argc, char *argv[])
     double proportion_right_turn_cars = inputDict["proportion_right_turn_cars:"];
     double proportion_right_turn_trucks = inputDict["proportion_right_turn_trucks:"];
 
-    size_t yellow_east_west = inputDict["yellow_east_west:"];
-    size_t yellow_north_south = inputDict["yellow_north_south:"];
+    int yellow_east_west = inputDict["yellow_east_west:"];
+    int yellow_north_south = inputDict["yellow_north_south:"];
 
-    double proportion_left_turn_SUVs = inputDict["proportion_left_turn_SUVs:"];
-    double proportion_left_turn_cars = inputDict["proportion_left_turn_cars:"];
-    double proportion_left_turn_trucks = inputDict["proportion_left_turn_trucks:"];
+    //double proportion_left_turn_SUVs = inputDict["proportion_left_turn_SUVs:"];
+    //double proportion_left_turn_cars = inputDict["proportion_left_turn_cars:"];
+    //double proportion_left_turn_trucks = inputDict["proportion_left_turn_trucks:"];
 
     Animator anim(halfsize);
 
@@ -132,13 +133,17 @@ int main(int argc, char *argv[])
     bool redEW = false;
     bool redNS = true;
 
-    size_t light_ticksEW = 0;
-    size_t light_ticksNS = 0; // tracks light switches
+
+    int light_ticksEW = 0;
+    int light_ticksNS = 0; // tracks light switches
+
 
     // start of while loop for each iteration
     while (numClicks < maximum_simulated_time)
     {
-        double randNum = random.getRandom();
+
+        //double randNum = random.getRandom();
+
 
         for (int i = halfsize * 2 + 2; i > halfsize; i--) // moves all eastbound after intersection
         {
