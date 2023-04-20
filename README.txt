@@ -16,3 +16,5 @@ We have tested a few scenarios. The following ones result in unexpected behavior
 1. Intersection lengths of less than or equal to 4 result in segmentation fault, for which we throw an exception. This is due to the fact that we check for the back of a car, starting from index halfsize-4. 
 2. The yellow light should be on for at least 1 tick. In other words, yellow_north_east and yellow_east_west parameters should be >=1.
 3. Probabilities in input can only be 0.0 to 1.0 and they have to be of type double.
+4. Vehicle count is not accurate because some vehciles spwan without entering the intersection. This happens due to the intersection being full and having no place for the vehicles to show up.
+5. We did not deallocate any memory. This is due to it being a short program.
