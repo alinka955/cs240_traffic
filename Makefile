@@ -1,24 +1,31 @@
-EXECS = testAnimator
-OBJS = testAnimator.o Animator.o VehicleBase.o
+CC = g++
+LD = $(CC)
+INCDIR = -I../
+CCFLAGS =  -std=c++17 $(INCDIR) -g -c
+LDFLAGS =  -std=c++17 -g
+OBJS = simulation.o readinput.o VehicleBase.o Animator.o RandomClass.o
+EXEC = simulation
 
-#### use next two lines for Mac
-CC = clang++
-CCFLAGS = -std=gnu++2a -stdlib=libc++
+simulation.o: Simulation.cpp Animator.h VehicleBase.h RandomClass.h readinput.h
+	$(CC) $(CCFLAGS) Simulation.cpp
 
-#### use next two lines for mathcs* machines:
-#CC = g++
-#CCFLAGS = -std=c++17
+readinput.o: readinput.cpp readinput.h
+	$(CC) $(CCFLAGS) readinput.cpp
 
-all: $(EXECS)
+VehicleBase.o: VehicleBase.cpp VehicleBase.h
+	$(CC) $(CCFLAGS) VehicleBase.cpp
 
-testAnimator: $(OBJS)
-	$(CC) $(CCFLAGS) $^ -o $@
+Animator.o: Animator.cpp Animator.h
+	$(CC) $(CCFLAGS) Animator.cpp
 
-%.o: %.cpp *.h
-	$(CC) $(CCFLAGS) -c $<
+RandomClass.o: RandomClass.cpp RandomClass.h
+	$(CC) $(CCFLAGS) RandomClass.cpp
 
-%.o: %.cpp
-	$(CC) $(CCFLAGS) -c $<
+$(EXEC): $(OBJS)
+	$(LD) $(LDFLAGS) $(OBJS) -o $(EXEC)
 
+all: $(EXEC)
+
+.PHONY: clean
 clean:
-	/bin/rm -f a.out $(OBJS) $(EXECS)
+	rm -f $(OBJS) $(EXEC)
