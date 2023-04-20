@@ -6,8 +6,13 @@ This is a traffic simulation program. It models the behavior of the vehicles of 
 
 To run this program you will need a Makefile, which produces an executable, called 'simulation'. To run the program, type executable followed by the name of the input file and the random number seed.
 
-We have tested a few scenarios. The following ones result in  errors:
-1. Intersection lengths of less than 4 result in segmentation fault.
-                This is due to the fact that we check for the back of a car, starting from index halfsize-4.
+Main design decisions:
+1. Separate files for random generator, reading input and simulation.
+2. The main method in Simulation.cpp contains everything needed for the simulation, except for the helper methods to assign the vehicle types and turning directions.
+3. Vehicles in this simulation can go only straight or right.
+
+
+We have tested a few scenarios. The following ones result in unexpected behavior:
+1. Intersection lengths of less than or equal to 4 result in segmentation fault, for which we throw an exception. This is due to the fact that we check for the back of a car, starting from index halfsize-4. 
 2. The yellow light should be on for at least 1 tick. In other words, yellow_north_east and yellow_east_west parameters should be >=1.
-3. In very specific insatnces, when green and yellow lights are set to small values, vehicles split.
+3. Probabilities in input can only be 0.0 to 1.0 and they have to be of type double.
