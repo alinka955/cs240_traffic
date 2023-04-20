@@ -77,11 +77,10 @@ int main(int argc, char *argv[])
     std::map<std::string, double> inputDict = readinput.getDict(argv[1]);
     // find the values of each variable, read from input
     int halfsize = inputDict["number_of_sections_before_intersection:"];
-    int maximum_simulated_time = inputDict["maximum_simulated_time:"];
+    size_t maximum_simulated_time = inputDict["maximum_simulated_time:"];
 
-
-    int green_east_west = inputDict["green_east_west:"];
-    int green_north_south = inputDict["green_north_south:"];
+    size_t green_east_west = inputDict["green_east_west:"];
+    size_t green_north_south = inputDict["green_north_south:"];
 
     double prob_new_vehicle_eastbound = inputDict["prob_new_vehicle_eastbound:"];
     double prob_new_vehicle_northbound = inputDict["prob_new_vehicle_northbound:"];
@@ -95,12 +94,12 @@ int main(int argc, char *argv[])
     double proportion_right_turn_cars = inputDict["proportion_right_turn_cars:"];
     double proportion_right_turn_trucks = inputDict["proportion_right_turn_trucks:"];
 
-    int yellow_east_west = inputDict["yellow_east_west:"];
-    int yellow_north_south = inputDict["yellow_north_south:"];
+    size_t yellow_east_west = inputDict["yellow_east_west:"];
+    size_t yellow_north_south = inputDict["yellow_north_south:"];
 
-    //double proportion_left_turn_SUVs = inputDict["proportion_left_turn_SUVs:"];
-    //double proportion_left_turn_cars = inputDict["proportion_left_turn_cars:"];
-    //double proportion_left_turn_trucks = inputDict["proportion_left_turn_trucks:"];
+    double proportion_left_turn_SUVs = inputDict["proportion_left_turn_SUVs:"];
+    double proportion_left_turn_cars = inputDict["proportion_left_turn_cars:"];
+    double proportion_left_turn_trucks = inputDict["proportion_left_turn_trucks:"];
 
     Animator anim(halfsize);
 
@@ -133,17 +132,14 @@ int main(int argc, char *argv[])
     bool redEW = false;
     bool redNS = true;
 
-
-    int light_ticksEW = 0;
-    int light_ticksNS = 0; // tracks light switches
-
+    size_t light_ticksEW = 0;
+    size_t light_ticksNS = 0; 
+    // tracks light switches
 
     // start of while loop for each iteration
     while (numClicks < maximum_simulated_time)
     {
-
-        //double randNum = random.getRandom();
-
+        double randNum = random.getRandom();
 
         for (int i = halfsize * 2 + 2; i > halfsize; i--) // moves all eastbound after intersection
         {
@@ -151,8 +147,8 @@ int main(int argc, char *argv[])
         }
         eastbound[halfsize] = nullptr;
 
-        // moves car into intersection
-        if (NSredTicks - light_ticksEW > 2 && eastbound[halfsize - 1] != nullptr && ((yellowEW) || greenEW))
+        // moves car into intersection eastbound
+        if (NSredTicks - light_ticksEW > 2 && eastbound[halfsize - 1] != nullptr && (!redEW))
         {
             int backOfCar = halfsize - 1;
 
@@ -199,8 +195,8 @@ int main(int argc, char *argv[])
         northbound[halfsize] = nullptr;
 
         // moves car into intersection
-        if (EWredTicks - light_ticksNS > 2 && northbound[halfsize - 1] != nullptr 
-                                                        && ((yellowNS) || greenNS))
+        if ((EWredTicks - light_ticksNS > 2) && (northbound[halfsize - 1] != nullptr) 
+                                                        && !redNS)
         {
             int backOfCar = halfsize - 1;
 
@@ -246,7 +242,7 @@ int main(int argc, char *argv[])
         southbound[halfsize] = nullptr;
 
         // moves car into intersection
-        if (EWredTicks - light_ticksNS > 2 && southbound[halfsize - 1] != nullptr && ((yellowNS) || greenNS))
+        if (EWredTicks - light_ticksNS > 2 && southbound[halfsize - 1] != nullptr && !redNS)
         {
             int backOfCar = halfsize - 1;
 
@@ -295,7 +291,7 @@ int main(int argc, char *argv[])
 
         // moves car into intersection
         if (NSredTicks - light_ticksEW > 2 && westbound[halfsize - 1] != nullptr && 
-                                                            ((yellowEW) || greenEW))
+                                                            !redEW)
         {
             int backOfCar = halfsize - 1;
 
@@ -307,7 +303,7 @@ int main(int argc, char *argv[])
                 {
                     break;
                 }
-                else if (westbound[backOfCar] == nullptr || westbound[backOfCar] == nullptr)
+                else if (westbound[backOfCar] == nullptr)
                 {
                     break;
                 }
@@ -655,25 +651,25 @@ int main(int argc, char *argv[])
             tempWestbound.pop_back();            // removes temp
         }
 
-        if ((eastbound[halfsize + 1] != nullptr) && (eastbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right)
+        if ((eastbound[halfsize] != nullptr) && (eastbound[halfsize])->getVehicleTurnDirection() == turnDirection::right)
         {
-            southbound[halfsize + 2] = std::move(eastbound[halfsize + 1]);
-            eastbound[halfsize + 1] = nullptr;
+            southbound[halfsize + 1] = eastbound[halfsize];
+            eastbound[halfsize] = nullptr;
         }
-        if ((westbound[halfsize + 1] != nullptr) && (westbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right)
+        if ((westbound[halfsize] != nullptr) && (westbound[halfsize])->getVehicleTurnDirection() == turnDirection::right)
         {
-            northbound[halfsize + 2] = std::move(westbound[halfsize + 1]);
-            westbound[halfsize + 1] = nullptr;
+            northbound[halfsize + 1] = westbound[halfsize];
+            westbound[halfsize] = nullptr;
         }
-        if ((northbound[halfsize + 1] != nullptr) && (northbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right)
+        if ((northbound[halfsize] != nullptr) && (northbound[halfsize])->getVehicleTurnDirection() == turnDirection::right)
         {
-            eastbound[halfsize + 2] = std::move(northbound[halfsize + 1]);
-            northbound[halfsize + 1] = nullptr;
+            eastbound[halfsize + 1] = northbound[halfsize];
+            northbound[halfsize] = nullptr;
         }
-        if ((southbound[halfsize + 1] != nullptr) && (southbound[halfsize + 1])->getVehicleTurnDirection() == turnDirection::right)
+        if ((southbound[halfsize] != nullptr) && (southbound[halfsize])->getVehicleTurnDirection() == turnDirection::right)
         {
-            westbound[halfsize + 2] = std::move(southbound[halfsize + 1]);
-            southbound[halfsize + 1] = nullptr;
+            westbound[halfsize + 1] = southbound[halfsize];
+            southbound[halfsize] = nullptr;
         }
 
         anim.setVehiclesNorthbound(northbound); // reconstructs intersection with appropriate numClicks
