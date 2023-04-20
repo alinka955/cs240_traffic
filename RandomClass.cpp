@@ -3,6 +3,7 @@
         /**
         * This program is an instance of the Random class that generates 
         * random double values between 0.0 and 1.0. 
+        * @author Juneseo Choi
         */
         //default constructor
         RandomClass::RandomClass(){
