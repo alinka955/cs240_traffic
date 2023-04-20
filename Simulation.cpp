@@ -128,8 +128,8 @@ int main(int argc, char *argv[])
     bool redEW = false;
     bool redNS = true;
 
-    size_t light_ticksEW = 0;
-    size_t light_ticksNS = 0;
+    int light_ticksEW = 0;
+    int light_ticksNS = 0;
     // tracks light switches
 
     // start of while loop for each iteration
