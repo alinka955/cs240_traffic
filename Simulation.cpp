@@ -8,6 +8,45 @@
 #include <vector>
 #include <map>
 
+/**
+ * @brief This class is intended to construct a working simulation of a traffic intersection as well as a
+ * corresponding animation. 
+ * 
+ * This code requires any vehicle class(es) created to be of the VehicleBase reference type, Similarly, 
+ * this code requires the animation class and readinput class used to be an instance of the Animator and ReadInput
+ * class, respectively, and requires the random generation class instances to be of the RandomClass reference type. 
+ * 
+ * @author Daniel Katz
+ * @author Alina Enikeeva
+ * @author Juneseo Choi
+ * 
+ * Variables:
+ * ReadInput readinput - instance of ReadInput class that creates a dictionary of all probability values given in input file
+ * int halfsize - determines number of spaces on road before the intersection
+ * int maximum_simulated_time - determines maximum number of ticks the simulation can run for
+ * int green_east_west - number of ticks the east-west traffic light remains green
+ * int green_north_south - number of ticks the north-south traffic light remains green
+ * int yellow_east_west - number of ticks the east-west traffic light remains yellow
+ * int yellow_north_south - number of ticks the north-south traffic light remains yellow
+ * vector<VehicleBase*> northbound - vector of VehicleBase instance addresses representing the northbound lane
+ * of the intersection
+ * vector<VehicleBase*> southbound - vector of VehicleBase instance addresses representing the southbound lane
+ * of the intersection
+ * vector<VehicleBase*> eastbound - vector of VehicleBase instance addresses representing the eastbound lane
+ * of the intersection
+ * vector<VehicleBase*> westbound - vector of VehicleBase instance addresses representing the westbound lane
+ * of the intersection
+ * double prob_new_vehicle_northbound - probability of new vehicle created to spawn in the northbound lane
+ * double prob_new_vehicle_southbound - probability of new vehicle created to spawn in the southbound lane
+ * double prob_new_vehicle_eastbound - probability of new vehicle created to spawn in the eastbound lane
+ * double prob_new_vehicle_westbound - probability of new vehicle created to spawn in the westbound lane
+ * double proportion_of_cars - probability of new vehicle created to be a car
+ * double proportion_of_SUVs - probability of new vehicle created to be an SUV
+ * double proportion_right_turn_cars - probability of car vehicle to turn right at the intersection
+ * double proportion_right_turn_SUVs - probability of SUV vehicle to turn right at the intersection
+ * double proportion_right_turn_trucks - probability of truck vehicle to turn right at the intersection
+ */
+
 // decides what direction the car will be going (0 for right or 1 for straight)
 int getTurnDirection(int carType, double proportion_right_turn_SUVs, double proportion_right_turn_trucks, double proportion_right_turn_cars, double randNum)
 {
@@ -65,6 +104,7 @@ int assignVehicle(double proportion_of_SUVs, double proportion_of_cars, double r
     }
 }
 
+//main method, runs the simulation as well as the animation
 int main(int argc, char *argv[])
 {
     ReadInput readinput;
@@ -136,6 +176,7 @@ int main(int argc, char *argv[])
     // start of while loop for each iteration
     while (numClicks < maximum_simulated_time)
     {
+        //eastbound lane move
         for (int i = halfsize * 2 + 2; i >halfsize; i--) // moves all eastbound after intersection
         {
             eastbound[i] = eastbound[i - 1];
@@ -180,7 +221,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        // northbound
+        // northbound lane move
         for (int i = halfsize * 2 + 2; i >= halfsize; i--) // moves all northbound after intersection
         {
             northbound[i] = northbound[i - 1];
@@ -225,7 +266,8 @@ int main(int argc, char *argv[])
             }
         }
 
-
+    
+        //southbound lane move
         for (int i = halfsize * 2 + 2; i >= halfsize; i--) // moves all southbound after intersection
         {
             southbound[i] = southbound[i - 1];
@@ -270,7 +312,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        // westbound
+        // westbound lane move
         for (int i = halfsize * 2 + 2; i >= halfsize; i--) // moves all westbound after intersection
         {
             westbound[i] = westbound[i - 1];
@@ -316,7 +358,7 @@ int main(int argc, char *argv[])
             }
         }
         // start of spawning
-        //  northbound spawning
+        // eastbound spawning
         if (random.getRandom() < prob_new_vehicle_eastbound)
         {
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars, random.getRandom()); // chooses car type
@@ -504,6 +546,7 @@ int main(int argc, char *argv[])
                 VehicleBase::vehicleCount++;
             }
         }
+        //westbound spawning
         if (random.getRandom() < prob_new_vehicle_westbound)
         {
             int carType = assignVehicle(proportion_of_SUVs, proportion_of_cars, random.getRandom()); // chooses car type
@@ -570,7 +613,8 @@ int main(int argc, char *argv[])
         }
 
         // end of adding cars
-
+        
+        //code to update light ticks and light colors
         std::cin.get(dummy);
         numClicks++;
         light_ticksNS++;
@@ -635,7 +679,8 @@ int main(int argc, char *argv[])
             westbound[0] = tempWestbound.back(); // sets to actual value
             tempWestbound.pop_back();            // removes temp
         }
-
+        
+        //checks if vehicle is turning right, moves to appropriate lane if vehicle is turning right at intersection
         if ((eastbound[halfsize] != nullptr) && (eastbound[halfsize])->getVehicleTurnDirection() == turnDirection::right)
         {
             southbound[halfsize + 1] = eastbound[halfsize];
@@ -661,7 +706,8 @@ int main(int argc, char *argv[])
         anim.setVehiclesWestbound(westbound);
         anim.setVehiclesSouthbound(southbound);
         anim.setVehiclesEastbound(eastbound);
-
+        
+        //sets light color of animation to appropriate color 
         if (greenEW && redNS)
         {
             anim.setLightNorthSouth(LightColor::red);
