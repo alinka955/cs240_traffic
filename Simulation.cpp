@@ -50,6 +50,7 @@ int getTurnDirection(int carType, double proportion_right_turn_SUVs, double prop
             return 1;
         }
     }
+    return 0;
 }
 
 // decides if a vehicle is an suv, car, or truck
@@ -75,7 +76,7 @@ int main(int argc, char *argv[])
     // RandomClass random;
     std::map<std::string, double> inputDict = readinput.getDict(argv[1]);
     // find the values of each variable, read from input
-    size_t halfsize = inputDict["number_of_sections_before_intersection:"];
+    int halfsize = inputDict["number_of_sections_before_intersection:"];
     size_t maximum_simulated_time = inputDict["maximum_simulated_time:"];
 
     size_t green_east_west = inputDict["green_east_west:"];
